@@ -2,10 +2,8 @@ package org.huanshi.mc.framework.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -17,7 +15,7 @@ import java.util.jar.JarFile;
 
 public class ReflectUtils {
     public static @NotNull List<Method> getMethods(@NotNull Class<?> clazz) {
-        List<Method> methodList = new LinkedList<>();
+        final List<Method> methodList = new LinkedList<>();
         while (clazz != null) {
             methodList.addAll(0, Arrays.asList(clazz.getDeclaredMethods()));
             clazz = clazz.getSuperclass();
@@ -26,7 +24,7 @@ public class ReflectUtils {
     }
 
     public static @NotNull List<Field> getFields(@NotNull Class<?> clazz) {
-        List<Field> fieldList = new LinkedList<>();
+        final List<Field> fieldList = new LinkedList<>();
         while (clazz != null) {
             fieldList.addAll(0, Arrays.asList(clazz.getDeclaredFields()));
             clazz = clazz.getSuperclass();
@@ -35,11 +33,11 @@ public class ReflectUtils {
     }
 
     public static @NotNull List<Class<?>> getJarClasses(@NotNull Class<?> clazz) throws IOException, ClassNotFoundException {
-        List<Class<?>> classList = new LinkedList<>();
-        try (JarFile jarFile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getPath())) {
-            Enumeration<JarEntry> jarEntryEnumeration = jarFile.entries();
+        final List<Class<?>> classList = new LinkedList<>();
+        try (final JarFile jarFile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getPath())) {
+            final Enumeration<JarEntry> jarEntryEnumeration = jarFile.entries();
             while (jarEntryEnumeration.hasMoreElements()) {
-                String name = jarEntryEnumeration.nextElement().getName();
+                final String name = jarEntryEnumeration.nextElement().getName();
                 if (StringUtils.endsWith(name, ".class") && !StringUtils.contains(name, "$")) {
                     classList.add(Class.forName(StringUtils.replace(name, "/", ".").replaceAll(".class", "")));
                 }

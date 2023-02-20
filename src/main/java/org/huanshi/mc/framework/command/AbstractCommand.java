@@ -17,7 +17,7 @@ public abstract sealed class AbstractCommand implements Component, Registrable, 
     public abstract boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args);
 
     protected @Nullable Player findPlayer(@NotNull Player player, @NotNull String targetPlayerName) {
-        Player targetPlayer = Bukkit.getPlayerExact(targetPlayerName);
+        final Player targetPlayer = Bukkit.getPlayerExact(targetPlayerName);
         if (targetPlayer == null) {
             player.sendMessage(Zh.PLAYER_NOT_FOUND);
         }
@@ -25,7 +25,7 @@ public abstract sealed class AbstractCommand implements Component, Registrable, 
     }
 
     protected @Nullable World findWorld(@NotNull Player player, @NotNull String worldName) {
-        World world = Bukkit.getWorld(worldName);
+        final World world = Bukkit.getWorld(worldName);
         if (world == null) {
             player.sendMessage(Zh.WORLD_NOT_FOUND);
         }
