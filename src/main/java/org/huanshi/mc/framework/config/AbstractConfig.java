@@ -24,7 +24,7 @@ public abstract class AbstractConfig implements Component {
     protected YamlConfiguration configuration;
 
     @Override
-    public void onCreate() throws IOException {
+    public final void onCreate() throws IOException {
         Config config = getClass().getAnnotation(Config.class);
         file = new File(plugin.getDataFolder(), config.file());
         try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource(config.file())))) {
@@ -42,43 +42,43 @@ public abstract class AbstractConfig implements Component {
     @Override
     public void onLoad() {}
 
-    public final void save() throws IOException {
+    public void save() throws IOException {
         configuration.save(file);
     }
 
-    public final void set(@NotNull String path, @Nullable Object value) {
+    public void set(@NotNull String path, @Nullable Object value) {
         configuration.set(path, value);
     }
 
-    public final @NotNull Location getLocation(@NotNull String path) {
+    public @NotNull Location getLocation(@NotNull String path) {
         return Objects.requireNonNull(configuration.getLocation(path));
     }
 
-    public final @NotNull String getString(@NotNull String path) {
+    public @NotNull String getString(@NotNull String path) {
         return Objects.requireNonNull(configuration.getString(path));
     }
 
-    public final @NotNull List<String> getStringList(@NotNull String path) {
+    public @NotNull List<String> getStringList(@NotNull String path) {
         return configuration.getStringList(path);
     }
 
-    public final @NotNull Set<String> getStringSet(@NotNull String path) {
+    public @NotNull Set<String> getStringSet(@NotNull String path) {
         return new HashSet<>(configuration.getStringList(path));
     }
 
-    public final long getLong(@NotNull String path) {
+    public long getLong(@NotNull String path) {
         return configuration.getLong(path);
     }
 
-    public final int getInt(@NotNull String path) {
+    public int getInt(@NotNull String path) {
         return configuration.getInt(path);
     }
 
-    public final double getDouble(@NotNull String path) {
+    public double getDouble(@NotNull String path) {
         return configuration.getDouble(path);
     }
 
-    public final float getFloat(@NotNull String path) {
+    public float getFloat(@NotNull String path) {
         return (float) configuration.getDouble(path);
     }
 }

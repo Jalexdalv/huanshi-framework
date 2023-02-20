@@ -16,7 +16,7 @@ public abstract class AbstractProtocol implements Component, Registrable {
     private static ProtocolManager protocolManager;
 
     @Override
-    public void onCreate() {
+    public final void onCreate() {
         if (protocolManager == null) {
             protocolManager = ProtocolLibrary.getProtocolManager();
         }
@@ -34,7 +34,7 @@ public abstract class AbstractProtocol implements Component, Registrable {
         }
     }
 
-    protected final @NotNull ProtocolManager getProtocolManager() {
+    protected @NotNull ProtocolManager getProtocolManager() {
         return protocolManager;
     }
 }

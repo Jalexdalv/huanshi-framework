@@ -77,23 +77,23 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
         return true;
     }
 
-    protected final boolean hasPermission(@NotNull Player player) {
+    protected boolean hasPermission(@NotNull Player player) {
         return player.isOp() || (!op && (permission == null || player.hasPermission(permission)));
     }
 
-    public final boolean isOp() {
+    public boolean isOp() {
         return op;
     }
 
-    public final @Nullable String getPermission() {
+    public @Nullable String getPermission() {
         return permission;
     }
 
-    public final @NotNull String getHead() {
+    public @NotNull String getHead() {
         return head;
     }
 
-    public final @NotNull String[] getArgs() {
+    public @NotNull String[] getArgs() {
         return args;
     }
 }

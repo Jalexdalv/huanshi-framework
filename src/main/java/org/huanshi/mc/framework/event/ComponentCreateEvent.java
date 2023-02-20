@@ -18,11 +18,11 @@ public class ComponentCreateEvent extends Event {
     }
 
     @Override
-    public final @NotNull HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 
-    public final @NotNull Component getComponent() {
+    public @NotNull Component getComponent() {
         return component;
     }
 }

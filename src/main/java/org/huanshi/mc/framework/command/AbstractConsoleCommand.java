@@ -44,11 +44,11 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
 
     protected abstract boolean onConsoleCommand(@NotNull ConsoleCommandSender consoleCommandSender, @NotNull String @NotNull [] args);
 
-    public final @NotNull String getHead() {
+    public @NotNull String getHead() {
         return head;
     }
 
-    public final @NotNull String[] getArgs() {
+    public @NotNull String[] getArgs() {
         return args;
     }
 }

@@ -15,7 +15,7 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     protected long delay, period;
 
     @Override
-    public void onCreate() {
+    public final void onCreate() {
         Task task = getClass().getAnnotation(Task.class);
         async = task.async();
         delay = FormatUtils.convertDurationToTick(task.delay());
@@ -37,15 +37,15 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     @Override
     public abstract void run();
 
-    public final boolean isAsync() {
+    public boolean isAsync() {
         return async;
     }
 
-    public final long getDelay() {
+    public long getDelay() {
         return delay;
     }
 
-    public final long getPeriod() {
+    public long getPeriod() {
         return period;
     }
 }
