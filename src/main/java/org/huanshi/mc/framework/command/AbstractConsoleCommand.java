@@ -28,7 +28,7 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
     public void load() {}
 
     @Override
-    public void register() {
+    public final void register() {
         Objects.requireNonNull(Bukkit.getPluginCommand(head)).setExecutor(this);
     }
 

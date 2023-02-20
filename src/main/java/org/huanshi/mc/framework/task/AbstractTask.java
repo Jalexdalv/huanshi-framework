@@ -24,7 +24,7 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     public void load() {}
 
     @Override
-    public void register() {
+    public final void register() {
         if (async) {
             runTaskTimerAsynchronously(plugin, delay, period);
         } else {

@@ -20,18 +20,12 @@ public abstract class AbstractPlugin extends JavaPlugin {
         } catch (Throwable throwable) {
             throw new RuntimeException(throwable);
         }
-        start();
         Bukkit.getConsoleSender().sendMessage(Zh.enable(getName()));
     }
 
     @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
-        stop();
         Bukkit.getConsoleSender().sendMessage(Zh.disable(getName()));
     }
-
-    protected void start() {}
-
-    protected void stop() {}
 }

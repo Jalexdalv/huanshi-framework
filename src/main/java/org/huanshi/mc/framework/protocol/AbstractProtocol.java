@@ -25,7 +25,7 @@ public abstract class AbstractProtocol implements Component, Registrable {
     public void load() {}
 
     @Override
-    public void register() throws InvocationTargetException, IllegalAccessException {
+    public final void register() throws InvocationTargetException, IllegalAccessException {
         for (Method method : ReflectUtils.getMethods(getClass())) {
             if (method.getAnnotation(ProtocolHandler.class) != null && method.getReturnType() == PacketAdapter.class) {
                 getProtocolManager().addPacketListener((PacketAdapter) method.invoke(this));

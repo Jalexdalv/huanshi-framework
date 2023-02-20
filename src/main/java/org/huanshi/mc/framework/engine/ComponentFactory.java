@@ -18,14 +18,17 @@ import java.util.Set;
 public class ComponentFactory {
     private static final Map<Class<? extends Component>, Component> LOADED_COMPONENT_MAP = new HashMap<>();
 
+    @SuppressWarnings("unchecked")
     public static void create(@NotNull AbstractPlugin plugin) throws Throwable {
         for (Class<?> clazz : ReflectUtils.getJarClasses(plugin.getClass())) {
             if (Component.class.isAssignableFrom(clazz) && !Modifier.isAbstract(clazz.getModifiers())) {
-                create(plugin, (Class<? extends Component>) clazz, new HashSet<>(){{ add((Class<? extends Component>) clazz); }});
+                final Class<? extends Component> componentClass = (Class<? extends Component>) clazz;
+                create(plugin, componentClass, new HashSet<>(){{ add(componentClass); }});
             }
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static @NotNull Component create(@NotNull AbstractPlugin plugin, @NotNull Class<? extends Component> clazz, @NotNull Set<Class<? extends Component>> autowiredClassSet) throws Throwable {
         Component component = LOADED_COMPONENT_MAP.get(clazz);
         if (component == null) {
@@ -36,17 +39,16 @@ public class ComponentFactory {
                     final Class<?> fieldClass = field.getType();
                     if (AbstractPlugin.class.isAssignableFrom(fieldClass)) {
                         field.set(component, plugin);
-                    } else {
-                        if (Component.class.isAssignableFrom(fieldClass) && !Modifier.isAbstract(fieldClass.getModifiers())) {
-                            for (Class<?> autowiredClass : autowiredClassSet) {
-                                if (autowiredClass.isAssignableFrom(fieldClass)) {
-                                    throw new CircularDependencyException(autowiredClassSet);
-                                }
+                    } else if (Component.class.isAssignableFrom(fieldClass) && !Modifier.isAbstract(fieldClass.getModifiers())) {
+                        for (Class<?> autowiredClass : autowiredClassSet) {
+                            if (autowiredClass.isAssignableFrom(fieldClass)) {
+                                throw new CircularDependencyException(autowiredClassSet);
                             }
-                            autowiredClassSet.add((Class<? extends Component>) fieldClass);
-                            field.set(component, create(plugin, (Class<? extends Component>) fieldClass, autowiredClassSet));
-                            autowiredClassSet.remove(fieldClass);
                         }
+                        final Class<? extends Component> componentClass = (Class<? extends Component>) fieldClass;
+                        autowiredClassSet.add(componentClass);
+                        field.set(component, create(plugin, componentClass, autowiredClassSet));
+                        autowiredClassSet.remove(fieldClass);
                     }
                 }
             }
@@ -56,7 +58,6 @@ public class ComponentFactory {
             }
             Bukkit.getPluginManager().callEvent(new ComponentCreateEvent<>(component));
             LOADED_COMPONENT_MAP.put(clazz, component);
-            Bukkit.getLogger().info("[" + plugin.getName() + "] " + clazz.getName() + " 已加载");
         }
         return component;
     }

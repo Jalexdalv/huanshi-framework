@@ -15,7 +15,7 @@ public abstract class AbstractListener implements Component, Registrable, Listen
     public void load() {}
 
     @Override
-    public void register() {
+    public final void register() {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 }

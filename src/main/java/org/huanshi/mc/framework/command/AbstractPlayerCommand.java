@@ -37,7 +37,7 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
     public void load() {}
 
     @Override
-    public void register() {
+    public final void register() {
         final PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(head));
         pluginCommand.setExecutor(this);
         pluginCommand.setTabCompleter(this);
