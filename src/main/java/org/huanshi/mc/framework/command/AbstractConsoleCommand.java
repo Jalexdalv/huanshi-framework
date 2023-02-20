@@ -12,11 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand {
-    protected final String head;
-    protected final String[] args;
+    protected String head;
+    protected String[] args;
 
-    public AbstractConsoleCommand() {
-        final ConsoleCommand command = getClass().getAnnotation(ConsoleCommand.class);
+    @Override
+    public final void onCreate() {
+        ConsoleCommand command = getClass().getAnnotation(ConsoleCommand.class);
         head = Objects.requireNonNull(StringUtils.trimToNull(command.head()));
         for (int i = 0, len = command.args().length; i < len; i++) {
             command.args()[i] = Objects.requireNonNull(StringUtils.trimToNull(command.args()[i]));
@@ -25,7 +26,7 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
     }
 
     @Override
-    public void load() {}
+    public void onLoad() {}
 
     @Override
     public final void register() {
@@ -33,7 +34,7 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
     }
 
     @Override
-    public final boolean onCommand(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String head, @NotNull final String @NotNull [] args) {
+    public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
         if (commandSender instanceof ConsoleCommandSender consoleCommandSender) {
             return onConsoleCommand(consoleCommandSender, args);
         }
@@ -41,7 +42,7 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
         return true;
     }
 
-    protected abstract boolean onConsoleCommand(@NotNull final ConsoleCommandSender consoleCommandSender, @NotNull final String @NotNull [] args);
+    protected abstract boolean onConsoleCommand(@NotNull ConsoleCommandSender consoleCommandSender, @NotNull String @NotNull [] args);
 
     public final @NotNull String getHead() {
         return head;

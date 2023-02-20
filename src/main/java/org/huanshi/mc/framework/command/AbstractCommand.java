@@ -14,18 +14,18 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract sealed class AbstractCommand implements Component, Registrable, CommandExecutor permits AbstractConsoleCommand, AbstractPlayerCommand {
     @Override
-    public abstract boolean onCommand(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String head, @NotNull final String @NotNull [] args);
+    public abstract boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args);
 
-    protected final @Nullable Player findPlayer(@NotNull final Player player, @NotNull final String targetPlayerName) {
-        final Player targetPlayer = Bukkit.getPlayerExact(targetPlayerName);
+    protected final @Nullable Player findPlayer(@NotNull Player player, @NotNull String targetPlayerName) {
+        Player targetPlayer = Bukkit.getPlayerExact(targetPlayerName);
         if (targetPlayer == null) {
             player.sendMessage(Zh.PLAYER_NOT_FOUND);
         }
         return targetPlayer;
     }
 
-    protected final @Nullable World findWorld(@NotNull final Player player, @NotNull final String worldName) {
-        final World world = Bukkit.getWorld(worldName);
+    protected final @Nullable World findWorld(@NotNull Player player, @NotNull String worldName) {
+        World world = Bukkit.getWorld(worldName);
         if (world == null) {
             player.sendMessage(Zh.WORLD_NOT_FOUND);
         }

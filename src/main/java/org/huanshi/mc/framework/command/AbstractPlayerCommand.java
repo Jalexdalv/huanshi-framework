@@ -17,13 +17,14 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand implements TabExecutor {
-    protected final boolean op;
-    protected final String permission, head;
-    protected final String[] args;
+    protected boolean op;
+    protected String permission, head;
+    protected String[] args;
     protected final List<String> emptyTabList = new ArrayList<>();
 
-    public AbstractPlayerCommand() {
-        final PlayerCommand playerCommand = getClass().getAnnotation(PlayerCommand.class);
+    @Override
+    public final void onCreate() {
+        PlayerCommand playerCommand = getClass().getAnnotation(PlayerCommand.class);
         op = playerCommand.op();
         permission = StringUtils.trimToNull(playerCommand.permission());
         head = Objects.requireNonNull(StringUtils.trimToNull(playerCommand.head()));
@@ -34,48 +35,49 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
     }
 
     @Override
-    public void load() {}
+    public void onLoad() {}
 
     @Override
     public final void register() {
-        final PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(head));
+        PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(head));
         pluginCommand.setExecutor(this);
         pluginCommand.setTabCompleter(this);
     }
 
     @Override
-    public final boolean onCommand(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String head, @NotNull final String @NotNull [] args) {
-        if (commandSender instanceof Player player) {
-            if (!canUse(player)) {
-                player.sendMessage(Zh.CANNOT_USE_COMMAND);
-            } else if (!hasPermission(player)) {
-                player.sendMessage(Zh.NO_PERMISSION);
-            } else {
-                return onPlayerCommand(player, args);
-            }
-        } else {
+    public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
+        if (!(commandSender instanceof Player player)) {
             commandSender.sendMessage(Zh.ONLY_GAME);
+            return true;
         }
-        return true;
+        if (!canUse(player)) {
+            player.sendMessage(Zh.CANNOT_USE_COMMAND);
+            return true;
+        }
+        if (!hasPermission(player)) {
+            player.sendMessage(Zh.NO_PERMISSION);
+            return true;
+        }
+        return onPlayerCommand(player, args);
     }
 
     @Override
-    public final @Nullable List<String> onTabComplete(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String head, @NotNull final String @NotNull [] args) {
+    public final @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
         if (commandSender instanceof Player player) {
             return onPlayerTabComplete(player, args);
         }
         return null;
     }
 
-    protected abstract boolean onPlayerCommand(@NotNull final Player player, @NotNull final String @NotNull [] args);
+    protected abstract boolean onPlayerCommand(@NotNull Player player, @NotNull String @NotNull [] args);
 
-    protected abstract @Nullable List<String> onPlayerTabComplete(@NotNull final Player player, @NotNull final String @NotNull [] args);
+    protected abstract @Nullable List<String> onPlayerTabComplete(@NotNull Player player, @NotNull String @NotNull [] args);
 
-    protected boolean canUse(@NotNull final Player player) {
+    protected boolean canUse(@NotNull Player player) {
         return true;
     }
 
-    protected final boolean hasPermission(@NotNull final Player player) {
+    protected final boolean hasPermission(@NotNull Player player) {
         return player.isOp() || (!op && (permission == null || player.hasPermission(permission)));
     }
 

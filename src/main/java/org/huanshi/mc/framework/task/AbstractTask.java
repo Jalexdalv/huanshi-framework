@@ -6,22 +6,24 @@ import org.huanshi.mc.framework.engine.Component;
 import org.huanshi.mc.framework.engine.Registrable;
 import org.huanshi.mc.framework.annotation.Autowired;
 import org.huanshi.mc.framework.annotation.Task;
+import org.huanshi.mc.framework.utils.FormatUtils;
 
 public abstract class AbstractTask extends BukkitRunnable implements Component, Registrable {
     @Autowired
     private AbstractPlugin plugin;
-    protected final boolean async;
-    protected final long delay, period;
+    protected boolean async;
+    protected long delay, period;
 
-    public AbstractTask() {
-        final Task task = getClass().getAnnotation(Task.class);
+    @Override
+    public void onCreate() {
+        Task task = getClass().getAnnotation(Task.class);
         async = task.async();
-        delay = task.delay();
-        period = task.period();
+        delay = FormatUtils.convertDurationToTick(task.delay());
+        period = FormatUtils.convertDurationToTick(task.period());
     }
 
     @Override
-    public void load() {}
+    public void onLoad() {}
 
     @Override
     public final void register() {

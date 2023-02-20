@@ -12,7 +12,7 @@ public abstract class AbstractPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            final File dataFolder = getDataFolder();
+            File dataFolder = getDataFolder();
             if (!dataFolder.exists()) {
                 Files.createDirectory(dataFolder.toPath());
             }

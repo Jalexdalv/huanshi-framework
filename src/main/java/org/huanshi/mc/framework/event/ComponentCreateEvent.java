@@ -9,7 +9,7 @@ public class ComponentCreateEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final Component component;
 
-    public ComponentCreateEvent(@NotNull final Component component) {
+    public ComponentCreateEvent(@NotNull Component component) {
         this.component = component;
     }
 

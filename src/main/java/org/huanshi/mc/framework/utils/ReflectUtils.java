@@ -15,7 +15,7 @@ import java.util.jar.JarFile;
 
 public class ReflectUtils {
     public static @NotNull List<Method> getMethods(@NotNull Class<?> clazz) {
-        final List<Method> methodList = new LinkedList<>();
+        List<Method> methodList = new LinkedList<>();
         while (clazz != null) {
             methodList.addAll(0, Arrays.asList(clazz.getDeclaredMethods()));
             clazz = clazz.getSuperclass();
@@ -24,7 +24,7 @@ public class ReflectUtils {
     }
 
     public static @NotNull List<Field> getFields(@NotNull Class<?> clazz) {
-        final List<Field> fieldList = new LinkedList<>();
+        List<Field> fieldList = new LinkedList<>();
         while (clazz != null) {
             fieldList.addAll(0, Arrays.asList(clazz.getDeclaredFields()));
             clazz = clazz.getSuperclass();
@@ -32,12 +32,12 @@ public class ReflectUtils {
         return fieldList;
     }
 
-    public static @NotNull List<Class<?>> getJarClasses(@NotNull final Class<?> clazz) throws IOException, ClassNotFoundException {
-        final List<Class<?>> classList = new LinkedList<>();
-        try (final JarFile jarFile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getPath())) {
-            final Enumeration<JarEntry> jarEntryEnumeration = jarFile.entries();
+    public static @NotNull List<Class<?>> getJarClasses(@NotNull Class<?> clazz) throws IOException, ClassNotFoundException {
+        List<Class<?>> classList = new LinkedList<>();
+        try (JarFile jarFile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getPath())) {
+            Enumeration<JarEntry> jarEntryEnumeration = jarFile.entries();
             while (jarEntryEnumeration.hasMoreElements()) {
-                final String name = jarEntryEnumeration.nextElement().getName();
+                String name = jarEntryEnumeration.nextElement().getName();
                 if (StringUtils.endsWith(name, ".class") && !StringUtils.contains(name, "$")) {
                     classList.add(Class.forName(StringUtils.replace(name, "/", ".").replaceAll(".class", "")));
                 }
