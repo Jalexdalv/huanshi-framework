@@ -39,43 +39,43 @@ public abstract class AbstractConfig implements Component {
         }
     }
 
-    public void save() throws IOException {
+    public final void save() throws IOException {
         configuration.save(file);
     }
 
-    public void set(@NotNull String path, @Nullable Object value) {
+    public final void set(@NotNull final String path, @Nullable final Object value) {
         configuration.set(path, value);
     }
 
-    public @NotNull Location getLocation(@NotNull String path) {
+    public final @NotNull Location getLocation(@NotNull final String path) {
         return Objects.requireNonNull(configuration.getLocation(path));
     }
 
-    public @NotNull String getString(@NotNull String path) {
+    public final @NotNull String getString(@NotNull final String path) {
         return Objects.requireNonNull(configuration.getString(path));
     }
 
-    public @NotNull List<String> getStringList(@NotNull String path) {
+    public final @NotNull List<String> getStringList(@NotNull final String path) {
         return configuration.getStringList(path);
     }
 
-    public @NotNull Set<String> getStringSet(@NotNull String path) {
+    public final @NotNull Set<String> getStringSet(@NotNull final String path) {
         return new HashSet<>(configuration.getStringList(path));
     }
 
-    public long getLong(@NotNull String path) {
+    public final long getLong(@NotNull final String path) {
         return configuration.getLong(path);
     }
 
-    public int getInt(@NotNull String path) {
+    public final int getInt(@NotNull final String path) {
         return configuration.getInt(path);
     }
 
-    public double getDouble(@NotNull String path) {
+    public final double getDouble(@NotNull final String path) {
         return configuration.getDouble(path);
     }
 
-    public float getFloat(@NotNull String path) {
+    public final float getFloat(@NotNull final String path) {
         return (float) configuration.getDouble(path);
     }
 }

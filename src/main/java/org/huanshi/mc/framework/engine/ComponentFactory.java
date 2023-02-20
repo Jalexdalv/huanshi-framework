@@ -19,7 +19,7 @@ public class ComponentFactory {
     private static final Map<Class<? extends Component>, Component> LOADED_COMPONENT_MAP = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public static void create(@NotNull AbstractPlugin plugin) throws Throwable {
+    public static void create(@NotNull final AbstractPlugin plugin) throws Throwable {
         for (Class<?> clazz : ReflectUtils.getJarClasses(plugin.getClass())) {
             if (Component.class.isAssignableFrom(clazz) && !Modifier.isAbstract(clazz.getModifiers())) {
                 final Class<? extends Component> componentClass = (Class<? extends Component>) clazz;
@@ -29,7 +29,7 @@ public class ComponentFactory {
     }
 
     @SuppressWarnings("unchecked")
-    private static @NotNull Component create(@NotNull AbstractPlugin plugin, @NotNull Class<? extends Component> clazz, @NotNull Set<Class<? extends Component>> autowiredClassSet) throws Throwable {
+    private static @NotNull Component create(@NotNull final AbstractPlugin plugin, @NotNull final Class<? extends Component> clazz, @NotNull final Set<Class<? extends Component>> autowiredClassSet) throws Throwable {
         Component component = LOADED_COMPONENT_MAP.get(clazz);
         if (component == null) {
             component = clazz.getConstructor().newInstance();

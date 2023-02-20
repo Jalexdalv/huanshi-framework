@@ -9,7 +9,7 @@ public class ComponentCreateEvent<T extends Component> extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final T t;
 
-    public ComponentCreateEvent(@NotNull T t) {
+    public ComponentCreateEvent(@NotNull final T t) {
         this.t = t;
     }
 
@@ -18,11 +18,11 @@ public class ComponentCreateEvent<T extends Component> extends Event {
     }
 
     @Override
-    public @NotNull HandlerList getHandlers() {
+    public final @NotNull HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 
-    public @NotNull T getComponent() {
+    public final @NotNull T getComponent() {
         return t;
     }
 }

@@ -33,7 +33,7 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
+    public final boolean onCommand(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String head, @NotNull final String @NotNull [] args) {
         if (commandSender instanceof ConsoleCommandSender consoleCommandSender) {
             return onConsoleCommand(consoleCommandSender, args);
         }
@@ -41,13 +41,13 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
         return true;
     }
 
-    protected abstract boolean onConsoleCommand(@NotNull ConsoleCommandSender consoleCommandSender, @NotNull String @NotNull [] args);
+    protected abstract boolean onConsoleCommand(@NotNull final ConsoleCommandSender consoleCommandSender, @NotNull final String @NotNull [] args);
 
-    public @NotNull String getHead() {
+    public final @NotNull String getHead() {
         return head;
     }
 
-    public @NotNull String[] getArgs() {
+    public final @NotNull String[] getArgs() {
         return args;
     }
 }

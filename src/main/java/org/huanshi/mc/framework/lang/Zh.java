@@ -15,11 +15,11 @@ public class Zh {
     public static final Component PLUGIN_NAME_1 = Component.text("[");
     public static final Component PLUGIN_NAME_2 = Component.text("] ");
     public static final Component ENABLE = Component.text("插件已加载", NamedTextColor.GREEN);
-    public static @NotNull Component enable(@NotNull String name) {
+    public static @NotNull Component enable(@NotNull final String name) {
         return PLUGIN_NAME_1.append(Component.text(name)).append(PLUGIN_NAME_2).append(ENABLE);
     }
     public static final Component DISABLE = Component.text("插件已卸载", NamedTextColor.GREEN);
-    public static @NotNull Component disable(@NotNull String name) {
+    public static @NotNull Component disable(@NotNull final String name) {
         return PLUGIN_NAME_1.append(Component.text(name)).append(PLUGIN_NAME_2).append(DISABLE);
     }
 }

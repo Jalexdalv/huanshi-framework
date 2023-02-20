@@ -30,7 +30,7 @@ public abstract class AbstractMapper implements Component {
         }
     }
 
-    protected @NotNull Connection getMySQLConnection() throws SQLException {
+    protected final @NotNull Connection getMySQLConnection() throws SQLException {
         return hikariDataSource.getConnection();
     }
 }

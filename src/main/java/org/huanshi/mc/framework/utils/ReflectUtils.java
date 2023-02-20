@@ -32,7 +32,7 @@ public class ReflectUtils {
         return fieldList;
     }
 
-    public static @NotNull List<Class<?>> getJarClasses(@NotNull Class<?> clazz) throws IOException, ClassNotFoundException {
+    public static @NotNull List<Class<?>> getJarClasses(@NotNull final Class<?> clazz) throws IOException, ClassNotFoundException {
         final List<Class<?>> classList = new LinkedList<>();
         try (final JarFile jarFile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getPath())) {
             final Enumeration<JarEntry> jarEntryEnumeration = jarFile.entries();

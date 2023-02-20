@@ -35,15 +35,15 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     @Override
     public abstract void run();
 
-    public boolean isAsync() {
+    public final boolean isAsync() {
         return async;
     }
 
-    public long getDelay() {
+    public final long getDelay() {
         return delay;
     }
 
-    public long getPeriod() {
+    public final long getPeriod() {
         return period;
     }
 }

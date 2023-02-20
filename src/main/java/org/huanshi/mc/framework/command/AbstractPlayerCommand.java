@@ -44,7 +44,7 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
+    public final boolean onCommand(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String head, @NotNull final String @NotNull [] args) {
         if (commandSender instanceof Player player) {
             if (!canUse(player)) {
                 player.sendMessage(Zh.CANNOT_USE_COMMAND);
@@ -60,38 +60,38 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
+    public final @Nullable List<String> onTabComplete(@NotNull final CommandSender commandSender, @NotNull final Command command, @NotNull final String head, @NotNull final String @NotNull [] args) {
         if (commandSender instanceof Player player) {
             return onPlayerTabComplete(player, args);
         }
         return null;
     }
 
-    protected abstract boolean onPlayerCommand(@NotNull Player player, @NotNull String @NotNull [] args);
+    protected abstract boolean onPlayerCommand(@NotNull final Player player, @NotNull final String @NotNull [] args);
 
-    protected abstract @Nullable List<String> onPlayerTabComplete(@NotNull Player player, @NotNull String @NotNull [] args);
+    protected abstract @Nullable List<String> onPlayerTabComplete(@NotNull final Player player, @NotNull final String @NotNull [] args);
 
-    protected boolean canUse(@NotNull Player player) {
+    protected boolean canUse(@NotNull final Player player) {
         return true;
     }
 
-    protected boolean hasPermission(@NotNull Player player) {
+    protected final boolean hasPermission(@NotNull final Player player) {
         return player.isOp() || (!op && (permission == null || player.hasPermission(permission)));
     }
 
-    public boolean isOp() {
+    public final boolean isOp() {
         return op;
     }
 
-    public @Nullable String getPermission() {
+    public final @Nullable String getPermission() {
         return permission;
     }
 
-    public @NotNull String getHead() {
+    public final @NotNull String getHead() {
         return head;
     }
 
-    public @NotNull String[] getArgs() {
+    public final @NotNull String[] getArgs() {
         return args;
     }
 }

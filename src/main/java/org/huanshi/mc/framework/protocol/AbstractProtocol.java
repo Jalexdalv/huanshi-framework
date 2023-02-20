@@ -33,7 +33,7 @@ public abstract class AbstractProtocol implements Component, Registrable {
         }
     }
 
-    protected @NotNull ProtocolManager getProtocolManager() {
+    protected final @NotNull ProtocolManager getProtocolManager() {
         return protocolManager;
     }
 }
