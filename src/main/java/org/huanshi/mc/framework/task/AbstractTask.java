@@ -10,8 +10,8 @@ import org.huanshi.mc.framework.annotation.Task;
 public abstract class AbstractTask extends BukkitRunnable implements Component, Registrable {
     @Autowired
     private AbstractPlugin plugin;
-    private final boolean async;
-    private final long delay, period;
+    protected final boolean async;
+    protected final long delay, period;
 
     public AbstractTask() {
         final Task task = getClass().getAnnotation(Task.class);
@@ -34,4 +34,16 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
 
     @Override
     public abstract void run();
+
+    public boolean isAsync() {
+        return async;
+    }
+
+    public long getDelay() {
+        return delay;
+    }
+
+    public long getPeriod() {
+        return period;
+    }
 }

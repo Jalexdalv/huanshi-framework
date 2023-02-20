@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand {
-    private final String head;
-    private final String[] args;
+    protected final String head;
+    protected final String[] args;
 
     public AbstractConsoleCommand() {
         final ConsoleCommand command = getClass().getAnnotation(ConsoleCommand.class);

@@ -20,11 +20,11 @@ import java.util.Set;
 public abstract class AbstractConfig implements Component {
     @Autowired
     private AbstractPlugin plugin;
-    private File file;
-    private YamlConfiguration configuration;
+    protected File file;
+    protected YamlConfiguration configuration;
 
     @Override
-    public void load() {
+    public void load() throws IOException {
         final Config config = getClass().getAnnotation(Config.class);
         file = new File(plugin.getDataFolder(), config.file());
         try (final InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource(config.file())))) {
@@ -36,8 +36,6 @@ public abstract class AbstractConfig implements Component {
                 configuration = YamlConfiguration.loadConfiguration(inputStreamReader);
             }
             save();
-        } catch (IOException ioException) {
-            throw new RuntimeException(ioException);
         }
     }
 
