@@ -56,7 +56,7 @@ public class ComponentFactory {
             if (Registrable.class.isAssignableFrom(clazz)) {
                 ((Registrable) component).register();
             }
-            Bukkit.getPluginManager().callEvent(new ComponentCreateEvent<>(component));
+            Bukkit.getPluginManager().callEvent(new ComponentCreateEvent(component));
             LOADED_COMPONENT_MAP.put(clazz, component);
         }
         return component;

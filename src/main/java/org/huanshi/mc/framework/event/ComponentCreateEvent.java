@@ -5,12 +5,12 @@ import org.bukkit.event.HandlerList;
 import org.huanshi.mc.framework.engine.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class ComponentCreateEvent<T extends Component> extends Event {
+public class ComponentCreateEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    private final T t;
+    private final Component component;
 
-    public ComponentCreateEvent(@NotNull final T t) {
-        this.t = t;
+    public ComponentCreateEvent(@NotNull final Component component) {
+        this.component = component;
     }
 
     public static @NotNull HandlerList getHandlerList() {
@@ -22,7 +22,7 @@ public class ComponentCreateEvent<T extends Component> extends Event {
         return HANDLER_LIST;
     }
 
-    public final @NotNull T getComponent() {
-        return t;
+    public final @NotNull Component getComponent() {
+        return component;
     }
 }
