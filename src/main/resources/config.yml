@@ -1,0 +1,10 @@
+data-source:
+  mysql:
+    connection-timeout: 30000
+    minimum-idle: 10
+    maximum-pool-size: 50
+    address: localhost
+    port: 3306
+    database: huanshimc
+    user: root
+    password: 12345
