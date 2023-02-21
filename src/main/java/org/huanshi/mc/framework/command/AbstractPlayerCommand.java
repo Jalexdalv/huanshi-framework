@@ -1,28 +1,26 @@
 package org.huanshi.mc.framework.command;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.huanshi.mc.framework.annotation.PlayerCommand;
+import org.huanshi.mc.framework.api.BukkitApi;
 import org.huanshi.mc.framework.lang.Zh;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand implements TabExecutor {
     protected boolean op;
     protected String permission;
-    protected final List<String> emptyTabList = new ArrayList<>();
+    protected final List<String> emptyTabList = List.of();
 
     @Override
-    public final void onCreate() {
+    public final void create() {
         PlayerCommand playerCommand = getClass().getAnnotation(PlayerCommand.class);
         op = playerCommand.op();
         permission = StringUtils.trimToNull(playerCommand.permission());
@@ -35,9 +33,7 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
 
     @Override
     public final void register() {
-        PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(name));
-        pluginCommand.setExecutor(this);
-        pluginCommand.setTabCompleter(this);
+        BukkitApi.registerTabExecutor(name, this);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package org.huanshi.mc.framework.engine;
 
-import org.bukkit.Bukkit;
 import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.annotation.Autowired;
+import org.huanshi.mc.framework.api.BukkitApi;
 import org.huanshi.mc.framework.event.ComponentCreateCompleteEvent;
 import org.huanshi.mc.framework.event.ComponentLoadCompleteEvent;
 import org.huanshi.mc.framework.event.ComponentScanCompleteEvent;
@@ -29,7 +29,7 @@ public class ComponentFactory {
                 create(plugin, componentClass, new LinkedList<>(){{ add(componentClass); }});
             }
         }
-        Bukkit.getPluginManager().callEvent(new ComponentScanCompleteEvent(Map.copyOf(LOADED_COMPONENT_MAP)));
+        BukkitApi.callEvent(new ComponentScanCompleteEvent(Map.copyOf(LOADED_COMPONENT_MAP)));
     }
 
     @SuppressWarnings("unchecked")
@@ -57,10 +57,10 @@ public class ComponentFactory {
                     }
                 }
             }
-            component.onCreate();
-            Bukkit.getPluginManager().callEvent(new ComponentCreateCompleteEvent(component));
-            component.onLoad();
-            Bukkit.getPluginManager().callEvent(new ComponentLoadCompleteEvent(component));
+            component.create();
+            BukkitApi.callEvent(new ComponentCreateCompleteEvent(component));
+            component.load();
+            BukkitApi.callEvent(new ComponentLoadCompleteEvent(component));
             if (Registrable.class.isAssignableFrom(clazz)) {
                 ((Registrable) component).register();
             }

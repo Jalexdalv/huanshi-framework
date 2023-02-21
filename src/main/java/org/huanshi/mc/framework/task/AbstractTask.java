@@ -18,7 +18,7 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     public abstract void run();
 
     @Override
-    public final void onCreate() {
+    public final void create() {
         Task task = getClass().getAnnotation(Task.class);
         async = task.async();
         delay = FormatUtils.convertDurationToTick(task.delay());
@@ -26,7 +26,7 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     }
 
     @Override
-    public void onLoad() {}
+    public void load() {}
 
     @Override
     public final void register() {

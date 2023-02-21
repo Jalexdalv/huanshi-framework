@@ -4,8 +4,8 @@ import org.huanshi.mc.framework.engine.Component;
 
 public abstract class AbstractService implements Component {
     @Override
-    public void onCreate() {}
+    public void create() {}
 
     @Override
-    public void onLoad() {}
+    public void load() {}
 }

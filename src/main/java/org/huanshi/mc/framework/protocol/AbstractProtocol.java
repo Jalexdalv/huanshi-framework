@@ -16,14 +16,14 @@ public abstract class AbstractProtocol implements Component, Registrable {
     private static ProtocolManager protocolManager;
 
     @Override
-    public final void onCreate() {
+    public final void create() {
         if (protocolManager == null) {
             protocolManager = ProtocolLibrary.getProtocolManager();
         }
     }
 
     @Override
-    public void onLoad() {}
+    public void load() {}
 
     @Override
     public final void register() throws InvocationTargetException, IllegalAccessException {
