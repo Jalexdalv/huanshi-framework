@@ -2,11 +2,11 @@ package org.huanshi.mc.framework.task;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.api.BukkitApi;
 import org.huanshi.mc.framework.engine.Component;
 import org.huanshi.mc.framework.engine.Registrable;
 import org.huanshi.mc.framework.annotation.Autowired;
 import org.huanshi.mc.framework.annotation.Task;
-import org.huanshi.mc.framework.utils.FormatUtils;
 
 public abstract class AbstractTask extends BukkitRunnable implements Component, Registrable {
     @Autowired
@@ -21,8 +21,8 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     public final void onCreate() {
         Task task = getClass().getAnnotation(Task.class);
         async = task.async();
-        delay = FormatUtils.convertDurationToTick(task.delay());
-        period = FormatUtils.convertDurationToTick(task.period());
+        delay = task.delay();
+        period = task.period();
     }
 
     @Override
@@ -31,9 +31,9 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     @Override
     public final void register() {
         if (async) {
-            runTaskTimerAsynchronously(plugin, delay, period);
+            BukkitApi.runTaskTimerAsynchronously(plugin, this, delay, period);
         } else {
-            runTaskTimer(plugin, delay, period);
+            BukkitApi.runTaskTimer(plugin, this, delay, period);
         }
     }
 

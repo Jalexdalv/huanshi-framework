@@ -2,6 +2,7 @@ package org.huanshi.mc.framework.timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.api.BukkitApi;
 import org.jetbrains.annotations.NotNull;
 
 public class Timer extends BukkitRunnable {
@@ -38,9 +39,9 @@ public class Timer extends BukkitRunnable {
         } else if (onStart()) {
             durationLeft = duration;
             if (async) {
-                runTaskTimerAsynchronously(plugin, delay, period);
+                BukkitApi.runTaskTimerAsynchronously(plugin, this, delay, period);
             } else {
-                runTaskTimer(plugin, delay, period);
+                BukkitApi.runTaskTimer(plugin, this, delay, period);
             }
         }
     }

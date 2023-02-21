@@ -58,9 +58,9 @@ public class ComponentFactory {
                 }
             }
             component.onCreate();
-            BukkitApi.callEvent(new ComponentCreateCompleteEvent(component));
+            BukkitApi.callEvent(new ComponentCreateCompleteEvent<>(component));
             component.onLoad();
-            BukkitApi.callEvent(new ComponentLoadCompleteEvent(component));
+            BukkitApi.callEvent(new ComponentLoadCompleteEvent<>(component));
             if (Registrable.class.isAssignableFrom(clazz)) {
                 ((Registrable) component).register();
             }

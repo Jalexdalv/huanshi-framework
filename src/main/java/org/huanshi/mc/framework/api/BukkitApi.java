@@ -63,7 +63,7 @@ public class BukkitApi {
         Bukkit.getConsoleSender().sendMessage(component);
     }
 
-    public static void cancelAllTask(@NotNull AbstractPlugin plugin) {
+    public static void cancelAllTasks(@NotNull AbstractPlugin plugin) {
         Bukkit.getScheduler().cancelTasks(plugin);
     }
 

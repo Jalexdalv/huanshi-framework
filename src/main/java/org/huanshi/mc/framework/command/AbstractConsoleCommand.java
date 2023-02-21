@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand {
+public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand<ConsoleCommandSender> {
     @Override
     public final void onCreate() {
         ConsoleCommand consoleCommand = getClass().getAnnotation(ConsoleCommand.class);
@@ -30,11 +30,9 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
     @Override
     public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args) {
         if (commandSender instanceof ConsoleCommandSender consoleCommandSender) {
-            return onConsoleCommand(consoleCommandSender, args);
+            return onCommand(consoleCommandSender, args);
         }
         commandSender.sendMessage(Zh.ONLY_CONSOLE);
         return true;
     }
-
-    protected abstract boolean onConsoleCommand(@NotNull ConsoleCommandSender consoleCommandSender, @NotNull String @NotNull [] args);
 }

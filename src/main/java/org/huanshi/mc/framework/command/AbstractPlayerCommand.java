@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand implements TabExecutor {
+public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand<Player> implements TabExecutor {
     protected boolean op;
     protected String permission;
     protected final List<String> emptyTabList = List.of();
@@ -50,20 +50,18 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
             player.sendMessage(Zh.NO_PERMISSION);
             return true;
         }
-        return onPlayerCommand(player, args);
+        return onCommand(player, args);
     }
 
     @Override
     public final @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args) {
         if (commandSender instanceof Player player) {
-            return onPlayerTabComplete(player, args);
+            return onTabComplete(player, args);
         }
         return null;
     }
 
-    protected abstract boolean onPlayerCommand(@NotNull Player player, @NotNull String @NotNull [] args);
-
-    protected abstract @Nullable List<String> onPlayerTabComplete(@NotNull Player player, @NotNull String @NotNull [] args);
+    protected abstract @Nullable List<String> onTabComplete(@NotNull Player player, @NotNull String @NotNull [] args);
 
     protected boolean canUse(@NotNull Player player) {
         return true;
