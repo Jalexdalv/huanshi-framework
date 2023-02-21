@@ -21,7 +21,7 @@ public class Countdowner extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public final void run() {
         if (isRunning() && onRun(getRepeatLeft())) {
             repeatLeft--;
         } else if (onStop()) {
@@ -29,7 +29,7 @@ public class Countdowner extends BukkitRunnable {
         }
     }
 
-    public void start() {
+    public final void start() {
         if (isRunning()) {
             if (reentry) {
                 if (onReentry()) {
@@ -46,11 +46,11 @@ public class Countdowner extends BukkitRunnable {
         }
     }
 
-    public void stop() {
+    public final void stop() {
         repeatLeft = 0;
     }
 
-    private boolean onReentry() {
+    protected boolean onReentry() {
         return true;
     }
 
@@ -66,11 +66,11 @@ public class Countdowner extends BukkitRunnable {
         return true;
     }
 
-    public int getRepeatLeft() {
+    public final int getRepeatLeft() {
         return repeatLeft;
     }
 
-    public boolean isRunning() {
+    public final boolean isRunning() {
         return repeatLeft > 0;
     }
 }

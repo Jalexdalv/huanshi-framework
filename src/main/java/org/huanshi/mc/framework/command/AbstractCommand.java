@@ -18,4 +18,12 @@ public abstract sealed class AbstractCommand implements Component, Registrable, 
 
     @Override
     public abstract boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args);
+
+    public @NotNull String getName() {
+        return name;
+    }
+
+    public @NotNull String @NotNull [] getArgs() {
+        return args;
+    }
 }

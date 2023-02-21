@@ -72,4 +72,12 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
     protected boolean hasPermission(@NotNull Player player) {
         return player.isOp() || (!op && (permission == null || player.hasPermission(permission)));
     }
+
+    public boolean isOp() {
+        return op;
+    }
+
+    public @NotNull String getPermission() {
+        return permission;
+    }
 }

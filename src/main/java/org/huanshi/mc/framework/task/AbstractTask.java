@@ -36,4 +36,16 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
             runTaskTimer(plugin, delay, period);
         }
     }
+
+    public boolean isAsync() {
+        return async;
+    }
+
+    public long getDelay() {
+        return delay;
+    }
+
+    public long getPeriod() {
+        return period;
+    }
 }

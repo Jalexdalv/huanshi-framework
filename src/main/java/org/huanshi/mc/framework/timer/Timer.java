@@ -20,7 +20,7 @@ public class Timer extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public final void run() {
         if (isRunning() && onRun(getDurationLeft())) {
             durationLeft = durationLeft - period;
         } else if (onStop()) {
@@ -28,7 +28,7 @@ public class Timer extends BukkitRunnable {
         }
     }
 
-    public void start() {
+    public final void start() {
         if (isRunning()) {
             if (reentry) {
                 if (onReentry()) {
@@ -45,11 +45,11 @@ public class Timer extends BukkitRunnable {
         }
     }
 
-    public void stop() {
+    public final void stop() {
         durationLeft = 0L;
     }
 
-    private boolean onReentry() {
+    protected boolean onReentry() {
         return true;
     }
 
@@ -65,11 +65,11 @@ public class Timer extends BukkitRunnable {
         return true;
     }
 
-    public long getDurationLeft() {
+    public final long getDurationLeft() {
         return durationLeft;
     }
 
-    public boolean isRunning() {
+    public final boolean isRunning() {
         return durationLeft > 0L;
     }
 }
