@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand {
     @Override
-    public final void create() {
+    public final void onCreate() {
         ConsoleCommand consoleCommand = getClass().getAnnotation(ConsoleCommand.class);
         name = Objects.requireNonNull(StringUtils.trimToNull(consoleCommand.name()));
         for (int i = 0, len = consoleCommand.args().length; i < len; i++) {

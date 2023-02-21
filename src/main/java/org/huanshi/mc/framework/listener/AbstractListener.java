@@ -11,10 +11,10 @@ public abstract class AbstractListener implements Component, Registrable, org.bu
     private AbstractPlugin plugin;
 
     @Override
-    public void create() {}
+    public void onCreate() {}
 
     @Override
-    public void load() {}
+    public void onLoad() {}
 
     @Override
     public final void register() {

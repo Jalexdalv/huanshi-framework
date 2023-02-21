@@ -2,6 +2,7 @@ package org.huanshi.mc.framework.lang;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Zh {
@@ -12,14 +13,19 @@ public class Zh {
     public static final Component PLAYER_NOT_FOUND = Component.text("该玩家不在线或不存在", NamedTextColor.RED);
     public static final Component WORLD_NOT_FOUND = Component.text("该世界不存在", NamedTextColor.RED);
 
-    public static final Component PLUGIN_NAME_1 = Component.text("[");
-    public static final Component PLUGIN_NAME_2 = Component.text("] ");
-    public static final Component ENABLE = Component.text("插件已加载", NamedTextColor.GREEN);
+    private static final Component PLUGIN_NAME_1 = Component.text("[");
+    private static final Component PLUGIN_NAME_2 = Component.text("] ");
+    private static final Component ENABLE = Component.text("插件已加载", NamedTextColor.GREEN);
     public static @NotNull Component enable(@NotNull String name) {
         return PLUGIN_NAME_1.append(Component.text(name)).append(PLUGIN_NAME_2).append(ENABLE);
     }
-    public static final Component DISABLE = Component.text("插件已卸载", NamedTextColor.GREEN);
+    private static final Component DISABLE = Component.text("插件已卸载", NamedTextColor.GREEN);
     public static @NotNull Component disable(@NotNull String name) {
         return PLUGIN_NAME_1.append(Component.text(name)).append(PLUGIN_NAME_2).append(DISABLE);
+    }
+    private static final Component CD_1 = Component.text("冷却中, 请等待 ", NamedTextColor.RED);
+    private static final Component CD_2 = Component.text(" 秒", NamedTextColor.RED);
+    public static @NotNull Component cd(long duration) {
+        return CD_1.append(Component.text(FormatUtils.convertMillisecondToSecond(duration), NamedTextColor.YELLOW)).append(CD_2);
     }
 }

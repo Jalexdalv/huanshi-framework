@@ -24,7 +24,7 @@ public abstract class AbstractConfig implements Component {
     protected YamlConfiguration configuration;
 
     @Override
-    public final void create() throws IOException {
+    public final void onCreate() throws IOException {
         Config config = getClass().getAnnotation(Config.class);
         file = new File(plugin.getDataFolder(), config.file());
         try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource(file.getName())))) {
@@ -40,7 +40,7 @@ public abstract class AbstractConfig implements Component {
     }
 
     @Override
-    public void load() {}
+    public void onLoad() {}
 
     public void save() throws IOException {
         configuration.save(file);

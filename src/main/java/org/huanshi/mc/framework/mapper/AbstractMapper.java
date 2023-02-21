@@ -16,7 +16,7 @@ public abstract class AbstractMapper implements Component {
     private MainConfig mainConfig;
 
     @Override
-    public final void create() {
+    public final void onCreate() {
         if (hikariDataSource == null) {
             HikariConfig hikariConfig = new HikariConfig();
             hikariConfig.setConnectionTimeout(mainConfig.getLong("data-source.mysql.connection-timeout"));
@@ -31,7 +31,7 @@ public abstract class AbstractMapper implements Component {
     }
 
     @Override
-    public void load() {}
+    public void onLoad() {}
 
     protected @NotNull Connection getMySQLConnection() throws SQLException {
         return hikariDataSource.getConnection();

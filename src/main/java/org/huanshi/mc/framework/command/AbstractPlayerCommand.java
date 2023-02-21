@@ -20,7 +20,7 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
     protected final List<String> emptyTabList = List.of();
 
     @Override
-    public final void create() {
+    public final void onCreate() {
         PlayerCommand playerCommand = getClass().getAnnotation(PlayerCommand.class);
         op = playerCommand.op();
         permission = StringUtils.trimToNull(playerCommand.permission());
@@ -71,13 +71,5 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
 
     protected boolean hasPermission(@NotNull Player player) {
         return player.isOp() || (!op && (permission == null || player.hasPermission(permission)));
-    }
-
-    public boolean isOp() {
-        return op;
-    }
-
-    public @Nullable String getPermission() {
-        return permission;
     }
 }

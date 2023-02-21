@@ -14,16 +14,8 @@ public abstract sealed class AbstractCommand implements Component, Registrable, 
     protected String[] args;
 
     @Override
-    public void load() {}
+    public void onLoad() {}
 
     @Override
     public abstract boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args);
-
-    public @NotNull String getName() {
-        return name;
-    }
-
-    public @NotNull String[] getArgs() {
-        return args;
-    }
 }

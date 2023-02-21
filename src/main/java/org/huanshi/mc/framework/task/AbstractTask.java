@@ -18,7 +18,7 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     public abstract void run();
 
     @Override
-    public final void create() {
+    public final void onCreate() {
         Task task = getClass().getAnnotation(Task.class);
         async = task.async();
         delay = FormatUtils.convertDurationToTick(task.delay());
@@ -26,7 +26,7 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
     }
 
     @Override
-    public void load() {}
+    public void onLoad() {}
 
     @Override
     public final void register() {
@@ -35,17 +35,5 @@ public abstract class AbstractTask extends BukkitRunnable implements Component, 
         } else {
             runTaskTimer(plugin, delay, period);
         }
-    }
-
-    public boolean isAsync() {
-        return async;
-    }
-
-    public long getDelay() {
-        return delay;
-    }
-
-    public long getPeriod() {
-        return period;
     }
 }

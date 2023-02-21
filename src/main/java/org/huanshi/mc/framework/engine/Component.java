@@ -1,11 +1,11 @@
 package org.huanshi.mc.framework.engine;
 
 public interface Component {
-    void create() throws Throwable;
-    void load() throws Throwable;
+    void onCreate() throws Throwable;
+    void onLoad() throws Throwable;
 
-    default void reload() throws Throwable {
-        create();
-        load();
+    default void onReload() throws Throwable {
+        onCreate();
+        onLoad();
     }
 }
