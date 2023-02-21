@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
 public @interface PlayerCommand {
     boolean op() default false;
     String permission() default "";
-    String head();
+    String name();
     String [] args() default {};
 }

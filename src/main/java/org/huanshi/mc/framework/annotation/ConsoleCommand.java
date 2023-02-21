@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface ConsoleCommand {
-    String head();
+    String name();
     String [] args() default {};
 }

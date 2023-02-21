@@ -16,7 +16,7 @@ public abstract class AbstractPlugin extends JavaPlugin {
             if (!dataFolder.exists()) {
                 Files.createDirectory(dataFolder.toPath());
             }
-            ComponentFactory.create(this);
+            ComponentFactory.scan(this);
         } catch (Throwable throwable) {
             throw new RuntimeException(throwable);
         }

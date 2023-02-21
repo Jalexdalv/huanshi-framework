@@ -18,8 +18,7 @@ import java.util.Objects;
 
 public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand implements TabExecutor {
     protected boolean op;
-    protected String permission, head;
-    protected String[] args;
+    protected String permission;
     protected final List<String> emptyTabList = new ArrayList<>();
 
     @Override
@@ -27,7 +26,7 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
         PlayerCommand playerCommand = getClass().getAnnotation(PlayerCommand.class);
         op = playerCommand.op();
         permission = StringUtils.trimToNull(playerCommand.permission());
-        head = Objects.requireNonNull(StringUtils.trimToNull(playerCommand.head()));
+        name = Objects.requireNonNull(StringUtils.trimToNull(playerCommand.name()));
         for (int i = 0, len = playerCommand.args().length; i < len; i++) {
             playerCommand.args()[i] = Objects.requireNonNull(StringUtils.trimToNull(playerCommand.args()[i]));
         }
@@ -35,17 +34,14 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
     }
 
     @Override
-    public void onLoad() {}
-
-    @Override
     public final void register() {
-        PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(head));
+        PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(name));
         pluginCommand.setExecutor(this);
         pluginCommand.setTabCompleter(this);
     }
 
     @Override
-    public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
+    public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args) {
         if (!(commandSender instanceof Player player)) {
             commandSender.sendMessage(Zh.ONLY_GAME);
             return true;
@@ -62,7 +58,7 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
     }
 
     @Override
-    public final @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
+    public final @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args) {
         if (commandSender instanceof Player player) {
             return onPlayerTabComplete(player, args);
         }
@@ -87,13 +83,5 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand i
 
     public @Nullable String getPermission() {
         return permission;
-    }
-
-    public @NotNull String getHead() {
-        return head;
-    }
-
-    public @NotNull String[] getArgs() {
-        return args;
     }
 }

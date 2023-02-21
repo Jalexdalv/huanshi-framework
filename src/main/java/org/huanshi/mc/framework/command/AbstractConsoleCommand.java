@@ -1,7 +1,6 @@
 package org.huanshi.mc.framework.command;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -12,29 +11,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand {
-    protected String head;
-    protected String[] args;
-
     @Override
     public final void onCreate() {
-        ConsoleCommand command = getClass().getAnnotation(ConsoleCommand.class);
-        head = Objects.requireNonNull(StringUtils.trimToNull(command.head()));
-        for (int i = 0, len = command.args().length; i < len; i++) {
-            command.args()[i] = Objects.requireNonNull(StringUtils.trimToNull(command.args()[i]));
+        ConsoleCommand consoleCommand = getClass().getAnnotation(ConsoleCommand.class);
+        name = Objects.requireNonNull(StringUtils.trimToNull(consoleCommand.name()));
+        for (int i = 0, len = consoleCommand.args().length; i < len; i++) {
+            consoleCommand.args()[i] = Objects.requireNonNull(StringUtils.trimToNull(consoleCommand.args()[i]));
         }
-        args = command.args();
+        args = consoleCommand.args();
     }
 
     @Override
-    public void onLoad() {}
-
-    @Override
-    public final void register() {
-        Objects.requireNonNull(Bukkit.getPluginCommand(head)).setExecutor(this);
-    }
-
-    @Override
-    public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args) {
+    public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args) {
         if (commandSender instanceof ConsoleCommandSender consoleCommandSender) {
             return onConsoleCommand(consoleCommandSender, args);
         }
@@ -43,12 +31,4 @@ public abstract non-sealed class AbstractConsoleCommand extends AbstractCommand 
     }
 
     protected abstract boolean onConsoleCommand(@NotNull ConsoleCommandSender consoleCommandSender, @NotNull String @NotNull [] args);
-
-    public @NotNull String getHead() {
-        return head;
-    }
-
-    public @NotNull String[] getArgs() {
-        return args;
-    }
 }

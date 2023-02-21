@@ -12,9 +12,25 @@ import org.huanshi.mc.framework.lang.Zh;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public abstract sealed class AbstractCommand implements Component, Registrable, CommandExecutor permits AbstractConsoleCommand, AbstractPlayerCommand {
+    protected String name;
+    protected String[] args;
+
     @Override
-    public abstract boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String head, @NotNull String @NotNull [] args);
+    public void onCreate() {}
+
+    @Override
+    public void onLoad() {}
+
+    @Override
+    public void register() {
+        Objects.requireNonNull(Bukkit.getPluginCommand(name)).setExecutor(this);
+    }
+
+    @Override
+    public abstract boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args);
 
     protected @Nullable Player findPlayer(@NotNull Player player, @NotNull String targetPlayerName) {
         Player targetPlayer = Bukkit.getPlayerExact(targetPlayerName);
@@ -30,5 +46,13 @@ public abstract sealed class AbstractCommand implements Component, Registrable, 
             player.sendMessage(Zh.WORLD_NOT_FOUND);
         }
         return world;
+    }
+
+    public @NotNull String getName() {
+        return name;
+    }
+
+    public @NotNull String[] getArgs() {
+        return args;
     }
 }

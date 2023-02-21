@@ -5,11 +5,11 @@ import org.bukkit.event.HandlerList;
 import org.huanshi.mc.framework.engine.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class ComponentCreateEvent extends Event {
+public class ComponentCreateCompleteEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final Component component;
 
-    public ComponentCreateEvent(@NotNull Component component) {
+    public ComponentCreateCompleteEvent(@NotNull Component component) {
         this.component = component;
     }
 
