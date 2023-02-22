@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class ComponentFactory {
                 create(plugin, componentClass, new LinkedList<>(){{ add(componentClass); }});
             }
         }
-        BukkitApi.callEvent(new ComponentScanCompleteEvent(Collections.unmodifiableCollection(LOADED_COMPONENT_MAP.values())));
+        BukkitApi.callEvent(new ComponentScanCompleteEvent(LOADED_COMPONENT_MAP.values()));
     }
 
     @SuppressWarnings("unchecked")
