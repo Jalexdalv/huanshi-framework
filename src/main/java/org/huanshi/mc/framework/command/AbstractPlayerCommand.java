@@ -63,11 +63,11 @@ public abstract non-sealed class AbstractPlayerCommand extends AbstractCommand<P
 
     protected abstract @Nullable List<String> onTabComplete(@NotNull Player player, @NotNull String @NotNull [] args);
 
-    protected boolean canUse(@NotNull Player player) {
+    public boolean canUse(@NotNull Player player) {
         return true;
     }
 
-    protected boolean hasPermission(@NotNull Player player) {
+    public boolean hasPermission(@NotNull Player player) {
         return player.isOp() || (!op && (permission == null || player.hasPermission(permission)));
     }
 

@@ -3,8 +3,6 @@ package org.huanshi.mc.framework.engine;
 import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.annotation.Autowired;
 import org.huanshi.mc.framework.api.BukkitApi;
-import org.huanshi.mc.framework.event.ComponentCreateCompleteEvent;
-import org.huanshi.mc.framework.event.ComponentLoadCompleteEvent;
 import org.huanshi.mc.framework.event.ComponentScanCompleteEvent;
 import org.huanshi.mc.framework.exception.CircularDependencyException;
 import org.huanshi.mc.framework.utils.ReflectUtils;
@@ -12,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ComponentFactory {
                 create(plugin, componentClass, new LinkedList<>(){{ add(componentClass); }});
             }
         }
-        BukkitApi.callEvent(new ComponentScanCompleteEvent(Map.copyOf(LOADED_COMPONENT_MAP)));
+        BukkitApi.callEvent(new ComponentScanCompleteEvent(Collections.unmodifiableCollection(LOADED_COMPONENT_MAP.values())));
     }
 
     @SuppressWarnings("unchecked")
@@ -58,9 +57,7 @@ public class ComponentFactory {
                 }
             }
             component.onCreate();
-            BukkitApi.callEvent(new ComponentCreateCompleteEvent<>(component));
             component.onLoad();
-            BukkitApi.callEvent(new ComponentLoadCompleteEvent<>(component));
             if (Registrable.class.isAssignableFrom(clazz)) {
                 ((Registrable) component).register();
             }

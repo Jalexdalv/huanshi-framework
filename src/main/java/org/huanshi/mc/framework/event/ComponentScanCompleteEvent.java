@@ -5,14 +5,14 @@ import org.bukkit.event.HandlerList;
 import org.huanshi.mc.framework.engine.Component;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.util.Collection;
 
 public class ComponentScanCompleteEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    private final Map<Class<? extends Component>, Component> componentMap;
+    private final Collection<Component> componentCollection;
 
-    public ComponentScanCompleteEvent(@NotNull Map<Class<? extends Component>, Component> componentMap) {
-        this.componentMap = componentMap;
+    public ComponentScanCompleteEvent(@NotNull Collection<Component> componentCollection) {
+        this.componentCollection = componentCollection;
     }
 
     public static @NotNull HandlerList getHandlerList() {
@@ -24,7 +24,7 @@ public class ComponentScanCompleteEvent extends Event {
         return HANDLER_LIST;
     }
 
-    public @NotNull Map<Class<? extends Component>, Component> getComponentMap() {
-        return componentMap;
+    public @NotNull Collection<Component> getComponents() {
+        return componentCollection;
     }
 }
