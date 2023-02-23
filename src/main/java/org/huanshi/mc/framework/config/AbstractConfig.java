@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public abstract class AbstractConfig implements HuanshiComponent {
-    protected final @NotNull String fileName = StringUtils.trimToNull(getClass().getAnnotation(Config.class).file());
+    protected final String fileName = StringUtils.trimToNull(getClass().getAnnotation(Config.class).file());
     @Getter
     protected File file;
     @Getter

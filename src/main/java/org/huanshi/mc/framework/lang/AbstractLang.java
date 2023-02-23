@@ -1,5 +1,6 @@
 package org.huanshi.mc.framework.lang;
 
+import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -7,16 +8,16 @@ import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.config.AbstractConfig;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.text.MessageFormat;
 import java.time.Duration;
 
 public abstract class AbstractLang extends AbstractConfig {
     private static MiniMessage miniMessage;
 
+    @SneakyThrows
     @Override
     public void create(@NotNull AbstractPlugin plugin) {
-        file = new File(plugin.getDataFolder(), "lang/" + fileName);
+        super.create(plugin);
         if (miniMessage == null) {
             miniMessage = MiniMessage.miniMessage();
         }

@@ -1,2 +1,2 @@
-enable: '[{0}] <green>Ф▐▓Д╩╤Е╥╡Е┼═Х╫╫'
-disable: '[{0}] <green>Ф▐▓Д╩╤Е╥╡Е█╦Х╫╫'
+enable: '[{0}] <gradient:green:white>╡Е╪Чря╪сть</gradient>'
+disable: '[{0}] <gradient:green:white>╡Е╪Чряп╤ть</gradient>'
