@@ -15,7 +15,7 @@ public abstract class AbstractListener implements HuanshiComponent, Registrable,
     public void load(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public final void register(@NotNull AbstractPlugin plugin) {
+    public void register(@NotNull AbstractPlugin plugin) {
         BukkitAPI.registerEvent(plugin, this);
     }
 }

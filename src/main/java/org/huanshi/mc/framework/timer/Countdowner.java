@@ -2,7 +2,7 @@ package org.huanshi.mc.framework.timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
-import org.huanshi.mc.framework.api.BukkitAPI;
+import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Countdowner extends BukkitRunnable {
@@ -22,7 +22,7 @@ public class Countdowner extends BukkitRunnable {
     }
 
     @Override
-    public final void run() {
+    public synchronized void run() {
         if (isRunning() && onRun(getRepeatLeft())) {
             repeatLeft--;
         } else if (onStop()) {
@@ -30,7 +30,7 @@ public class Countdowner extends BukkitRunnable {
         }
     }
 
-    public final void start() {
+    public synchronized void start() {
         if (isRunning()) {
             if (reentry) {
                 if (onReentry()) {
@@ -40,14 +40,14 @@ public class Countdowner extends BukkitRunnable {
         } else if (onStart()) {
             repeatLeft = repeat;
             if (async) {
-                BukkitAPI.runTaskTimerAsynchronously(plugin, this, delay, period);
+                runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             } else {
-                BukkitAPI.runTaskTimer(plugin, this, delay, period);
+                runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             }
         }
     }
 
-    public final void stop() {
+    public synchronized void stop() {
         repeatLeft = 0;
     }
 
@@ -67,11 +67,11 @@ public class Countdowner extends BukkitRunnable {
         return true;
     }
 
-    public final int getRepeatLeft() {
+    public synchronized int getRepeatLeft() {
         return repeatLeft;
     }
 
-    public final boolean isRunning() {
+    public synchronized boolean isRunning() {
         return repeatLeft > 0;
     }
 }

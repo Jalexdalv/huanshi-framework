@@ -10,7 +10,7 @@ public class Cooldowner {
         this.duration = duration;
     }
 
-    public final void start() {
+    public void start() {
         if (isRunning()) {
             if (reentry) {
                 if (onReentry()) {
@@ -24,7 +24,7 @@ public class Cooldowner {
         }
     }
 
-    public final void stop() {
+    public void stop() {
         time = 0L;
     }
 
@@ -38,11 +38,11 @@ public class Cooldowner {
 
     protected void onRun(long durationLeft) {}
 
-    public final long getDurationLeft() {
+    public long getDurationLeft() {
         return Math.max(time - System.currentTimeMillis(), 0L);
     }
 
-    public final boolean isRunning() {
+    public boolean isRunning() {
         return time - System.currentTimeMillis() > 0L;
     }
 }

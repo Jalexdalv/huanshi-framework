@@ -3,6 +3,7 @@ package org.huanshi.mc.framework.command;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.annotation.Command;
 import org.huanshi.mc.framework.api.BukkitAPI;
@@ -24,4 +25,6 @@ public abstract class AbstractCommand implements HuanshiComponent, Registrable, 
     public void register(@NotNull AbstractPlugin plugin) {
         BukkitAPI.registerTabExecutor(name, this);
     }
+
+    public abstract boolean hasPermission(@NotNull Player player);
 }

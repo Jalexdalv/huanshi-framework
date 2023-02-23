@@ -2,7 +2,7 @@ package org.huanshi.mc.framework.timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
-import org.huanshi.mc.framework.api.BukkitAPI;
+import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Timer extends BukkitRunnable {
@@ -21,15 +21,15 @@ public class Timer extends BukkitRunnable {
     }
 
     @Override
-    public final void run() {
+    public synchronized void run() {
         if (isRunning() && onRun(getDurationLeft())) {
-            durationLeft = durationLeft - period;
+            durationLeft = Math.max(durationLeft - period, 0L);
         } else if (onStop()) {
             cancel();
         }
     }
 
-    public final void start() {
+    public synchronized void start() {
         if (isRunning()) {
             if (reentry) {
                 if (onReentry()) {
@@ -39,14 +39,14 @@ public class Timer extends BukkitRunnable {
         } else if (onStart()) {
             durationLeft = duration;
             if (async) {
-                BukkitAPI.runTaskTimerAsynchronously(plugin, this, delay, period);
+                runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             } else {
-                BukkitAPI.runTaskTimer(plugin, this, delay, period);
+                runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             }
         }
     }
 
-    public final void stop() {
+    public synchronized void stop() {
         durationLeft = 0L;
     }
 
@@ -66,11 +66,11 @@ public class Timer extends BukkitRunnable {
         return true;
     }
 
-    public final long getDurationLeft() {
+    public synchronized long getDurationLeft() {
         return durationLeft;
     }
 
-    public final boolean isRunning() {
+    public synchronized boolean isRunning() {
         return durationLeft > 0L;
     }
 }

@@ -2,13 +2,13 @@ package org.huanshi.mc.framework.lang;
 
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.config.AbstractConfig;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.MessageFormat;
 import java.time.Duration;
 
 public abstract class AbstractLang extends AbstractConfig {
@@ -27,11 +27,30 @@ public abstract class AbstractLang extends AbstractConfig {
         return miniMessage.deserialize(getString(path));
     }
 
-    public @NotNull Component getComponent(@NotNull String path, @NotNull Object @NotNull ... values) {
-        return miniMessage.deserialize(MessageFormat.format(getString(path), values));
+    public @NotNull Component formatComponent(@NotNull Component component, @NotNull Object @NotNull ... values) {
+        for (int i = 0, len = values.length; i < len; i++) {
+            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + i + "}").replacement(values[i].toString()).build());
+        }
+        return component;
     }
 
-    public @NotNull Title getTitle(@NotNull Component title, @NotNull Component subTitle, long fideIn, long stay, long fideOut) {
-        return Title.title(title, subTitle, Title.Times.times(Duration.ofMillis(fideIn), Duration.ofMillis(stay), Duration.ofMillis(fideOut)));
+    public @NotNull Title getTitle(@NotNull Component titleComponent, @NotNull Component subTitleComponent, long fideIn, long stay, long fideOut) {
+        return Title.title(titleComponent, subTitleComponent, Title.Times.times(Duration.ofMillis(fideIn), Duration.ofMillis(stay), Duration.ofMillis(fideOut)));
+    }
+
+    public @NotNull Title formatTitle(@NotNull Title title, @NotNull Object @NotNull ... values) {
+        Component component = title.title();
+        for (int i = 0, len = values.length; i < len; i++) {
+            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + i + "}").replacement(values[i].toString()).build());
+        }
+        return title;
+    }
+
+    public @NotNull Title formatSubTitle(@NotNull Title title, @NotNull Object @NotNull ... values) {
+        Component component = title.subtitle();
+        for (int i = 0, len = values.length; i < len; i++) {
+            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + i + "}").replacement(values[i].toString()).build());
+        }
+        return title;
     }
 }
