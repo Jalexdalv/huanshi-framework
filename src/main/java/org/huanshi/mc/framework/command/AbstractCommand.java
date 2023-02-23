@@ -1,29 +1,27 @@
 package org.huanshi.mc.framework.command;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.huanshi.mc.framework.engine.Component;
-import org.huanshi.mc.framework.engine.Registrable;
+import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.command.TabExecutor;
+import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.annotation.Command;
+import org.huanshi.mc.framework.api.BukkitAPI;
+import org.huanshi.mc.framework.pojo.HuanshiComponent;
+import org.huanshi.mc.framework.pojo.Registrable;
 import org.jetbrains.annotations.NotNull;
 
-public abstract sealed class AbstractCommand<T extends CommandSender> implements Component, Registrable, CommandExecutor permits AbstractConsoleCommand, AbstractPlayerCommand {
-    protected String name;
-    protected String[] args;
+public abstract class AbstractCommand implements HuanshiComponent, Registrable, TabExecutor {
+    @Getter
+    protected final @NotNull String name = StringUtils.trimToNull(getClass().getAnnotation(Command.class).name());
 
     @Override
-    public void onLoad() {}
+    public void create(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public abstract boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String name, @NotNull String @NotNull [] args);
+    public void load(@NotNull AbstractPlugin plugin) {}
 
-    protected abstract boolean onCommand(@NotNull T t, @NotNull String @NotNull [] args);
-
-    public @NotNull String getName() {
-        return name;
-    }
-
-    public @NotNull String @NotNull [] getArgs() {
-        return args;
+    @Override
+    public void register(@NotNull AbstractPlugin plugin) {
+        BukkitAPI.registerTabExecutor(name, this);
     }
 }

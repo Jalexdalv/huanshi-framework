@@ -17,7 +17,7 @@ public class HuanshiParticle extends HuanshiLocation {
     protected final double offsetX, offsetY, offsetZ, speed;
     protected final Object data;
 
-    public <T> HuanshiParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double speed, @Nullable T data) {
+    public HuanshiParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double speed, @Nullable Object data) {
         super(location);
         this.particle = particle;
         this.count = count;

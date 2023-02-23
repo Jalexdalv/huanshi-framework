@@ -1,51 +1,36 @@
 package org.huanshi.mc.framework.task;
 
+import lombok.Getter;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
-import org.huanshi.mc.framework.api.BukkitApi;
-import org.huanshi.mc.framework.engine.Component;
-import org.huanshi.mc.framework.engine.Registrable;
-import org.huanshi.mc.framework.annotation.Autowired;
+import org.huanshi.mc.framework.api.BukkitAPI;
+import org.huanshi.mc.framework.pojo.HuanshiComponent;
+import org.huanshi.mc.framework.pojo.Registrable;
 import org.huanshi.mc.framework.annotation.Task;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractTask extends BukkitRunnable implements Component, Registrable {
-    @Autowired
-    private AbstractPlugin plugin;
-    protected boolean async;
-    protected long delay, period;
+public abstract class AbstractTask extends BukkitRunnable implements HuanshiComponent, Registrable {
+    protected final @NotNull Task task = getClass().getAnnotation(Task.class);
+    @Getter
+    protected final boolean async = task.async();
+    @Getter
+    protected final long delay = task.delay(), period = task.period();
 
     @Override
     public abstract void run();
 
     @Override
-    public final void onCreate() {
-        Task task = getClass().getAnnotation(Task.class);
-        async = task.async();
-        delay = task.delay();
-        period = task.period();
-    }
+    public void create(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public void onLoad() {}
+    public void load(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public final void register() {
+    public void register(@NotNull AbstractPlugin plugin) {
         if (async) {
-            BukkitApi.runTaskTimerAsynchronously(plugin, this, delay, period);
+            BukkitAPI.runTaskTimerAsynchronously(plugin, this, delay, period);
         } else {
-            BukkitApi.runTaskTimer(plugin, this, delay, period);
+            BukkitAPI.runTaskTimer(plugin, this, delay, period);
         }
-    }
-
-    public boolean isAsync() {
-        return async;
-    }
-
-    public long getDelay() {
-        return delay;
-    }
-
-    public long getPeriod() {
-        return period;
     }
 }

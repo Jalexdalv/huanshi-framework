@@ -2,7 +2,7 @@ package org.huanshi.mc.framework.timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
-import org.huanshi.mc.framework.api.BukkitApi;
+import org.huanshi.mc.framework.api.BukkitAPI;
 import org.jetbrains.annotations.NotNull;
 
 public class Countdowner extends BukkitRunnable {
@@ -40,9 +40,9 @@ public class Countdowner extends BukkitRunnable {
         } else if (onStart()) {
             repeatLeft = repeat;
             if (async) {
-                BukkitApi.runTaskTimerAsynchronously(plugin, this, delay, period);
+                BukkitAPI.runTaskTimerAsynchronously(plugin, this, delay, period);
             } else {
-                BukkitApi.runTaskTimer(plugin, this, delay, period);
+                BukkitAPI.runTaskTimer(plugin, this, delay, period);
             }
         }
     }

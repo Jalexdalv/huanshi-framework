@@ -2,17 +2,17 @@ package org.huanshi.mc.framework.event;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.huanshi.mc.framework.engine.Component;
+import org.huanshi.mc.framework.pojo.HuanshiComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
 public class ComponentScanCompleteEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    private final Collection<Component> componentCollection;
+    private final Collection<HuanshiComponent> huanshiComponentCollection;
 
-    public ComponentScanCompleteEvent(@NotNull Collection<Component> componentCollection) {
-        this.componentCollection = componentCollection;
+    public ComponentScanCompleteEvent(@NotNull Collection<HuanshiComponent> huanshiComponentCollection) {
+        this.huanshiComponentCollection = huanshiComponentCollection;
     }
 
     public static @NotNull HandlerList getHandlerList() {
@@ -24,7 +24,7 @@ public class ComponentScanCompleteEvent extends Event {
         return HANDLER_LIST;
     }
 
-    public @NotNull Collection<Component> getComponents() {
-        return componentCollection;
+    public @NotNull Collection<HuanshiComponent> getHuanshiComponents() {
+        return huanshiComponentCollection;
     }
 }

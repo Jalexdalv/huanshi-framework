@@ -1,0 +1,2 @@
+enable: '[{0}] <green>插件已加载'
+disable: '[{0}] <green>插件已卸载'

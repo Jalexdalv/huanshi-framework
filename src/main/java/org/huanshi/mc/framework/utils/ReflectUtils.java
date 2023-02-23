@@ -1,9 +1,9 @@
 package org.huanshi.mc.framework.utils;
 
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -32,7 +32,8 @@ public class ReflectUtils {
         return fieldList;
     }
 
-    public static @NotNull List<Class<?>> getJarClasses(@NotNull Class<?> clazz) throws IOException, ClassNotFoundException {
+    @SneakyThrows
+    public static @NotNull List<Class<?>> getJarClasses(@NotNull Class<?> clazz) {
         List<Class<?>> classList = new LinkedList<>();
         try (JarFile jarFile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getFile())) {
             Enumeration<JarEntry> jarEntryEnumeration = jarFile.entries();

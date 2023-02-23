@@ -2,21 +2,25 @@ package org.huanshi.mc.framework.mapper;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.huanshi.mc.framework.engine.Component;
+import lombok.SneakyThrows;
+import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.pojo.HuanshiComponent;
 import org.huanshi.mc.framework.annotation.Autowired;
 import org.huanshi.mc.framework.config.MainConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
-public abstract class AbstractMapper implements Component {
+public abstract class AbstractMapper implements HuanshiComponent {
     private static HikariDataSource hikariDataSource;
     @Autowired
     private MainConfig mainConfig;
 
     @Override
-    public final void onCreate() {
+    public void create(@NotNull AbstractPlugin plugin) {}
+
+    @Override
+    public void load(@NotNull AbstractPlugin plugin) {
         if (hikariDataSource == null) {
             HikariConfig hikariConfig = new HikariConfig();
             hikariConfig.setConnectionTimeout(mainConfig.getLong("data-source.mysql.connection-timeout"));
@@ -30,10 +34,8 @@ public abstract class AbstractMapper implements Component {
         }
     }
 
-    @Override
-    public void onLoad() {}
-
-    protected @NotNull Connection getMySQLConnection() throws SQLException {
+    @SneakyThrows
+    protected @NotNull Connection getMySQLConnection() {
         return hikariDataSource.getConnection();
     }
 }

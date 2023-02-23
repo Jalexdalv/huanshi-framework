@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class HuanshiLocation extends Location {
-    protected final double sin, cos;
+    protected double sin, cos;
 
     public HuanshiLocation(@NotNull Location location) {
         super(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
