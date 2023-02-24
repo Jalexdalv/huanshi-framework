@@ -1,6 +1,5 @@
 package org.huanshi.mc.framework.config;
 
-import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Location;
@@ -20,19 +19,17 @@ import java.util.Set;
 
 public abstract class AbstractConfig implements HuanshiComponent {
     protected final String fileName = StringUtils.trimToNull(getClass().getAnnotation(Config.class).file());
-    @Getter
     protected File file;
-    @Getter
     protected YamlConfiguration configuration;
 
     @Override
-    public void create(@NotNull AbstractPlugin plugin) {
+    public void onCreate(@NotNull AbstractPlugin plugin) {
         file = new File(plugin.getDataFolder(), fileName);
     }
 
     @SneakyThrows
     @Override
-    public void load(@NotNull AbstractPlugin plugin) {
+    public void onLoad(@NotNull AbstractPlugin plugin) {
         try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource(fileName)))) {
             if (file.exists()) {
                 configuration = YamlConfiguration.loadConfiguration(file);

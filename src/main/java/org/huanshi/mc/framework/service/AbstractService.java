@@ -6,8 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractService implements HuanshiComponent {
     @Override
-    public void create(@NotNull AbstractPlugin plugin) {}
+    public void onCreate(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public void load(@NotNull AbstractPlugin plugin) {}
+    public void onLoad(@NotNull AbstractPlugin plugin) {}
 }

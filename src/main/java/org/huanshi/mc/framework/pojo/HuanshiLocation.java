@@ -53,7 +53,7 @@ public class HuanshiLocation extends Location {
 
     @SuppressWarnings("unchecked")
     public @NotNull <T extends Entity> List<T> getNearbyEntityExceptPlayer(@Nullable Player player, @NotNull Class<T> clazz, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable EntityHandler<T> entityHandler) {
-        List<T> entityList = new LinkedList<>();
+        List<T> entities = new LinkedList<>();
         AABB aabb = getAABB(x1, y1, z1, x2, y2, z2);
         ((CraftWorld) getWorld()).getHandle().getEntityLookup().getEntities(player == null ? null : ((CraftEntity) player).getHandle(), aabb.getAxisAlignedBB(), null, entity -> {
             CraftEntity craftEntity = entity.getBukkitEntity();
@@ -63,11 +63,11 @@ public class HuanshiLocation extends Location {
                     if (entityHandler != null) {
                         entityHandler.handle(t);
                     }
-                    entityList.add(t);
+                    entities.add(t);
                 }
             }
             return false;
         });
-        return entityList;
+        return entities;
     }
 }

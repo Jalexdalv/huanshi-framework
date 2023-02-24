@@ -1,6 +1,5 @@
 package org.huanshi.mc.framework.lang;
 
-import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -14,10 +13,9 @@ import java.time.Duration;
 public abstract class AbstractLang extends AbstractConfig {
     private static MiniMessage miniMessage;
 
-    @SneakyThrows
     @Override
-    public void create(@NotNull AbstractPlugin plugin) {
-        super.create(plugin);
+    public void onCreate(@NotNull AbstractPlugin plugin) {
+        super.onCreate(plugin);
         if (miniMessage == null) {
             miniMessage = MiniMessage.miniMessage();
         }
@@ -39,18 +37,12 @@ public abstract class AbstractLang extends AbstractConfig {
     }
 
     public @NotNull Title formatTitle(@NotNull Title title, @NotNull Object @NotNull ... values) {
-        Component component = title.title();
-        for (int i = 0, len = values.length; i < len; i++) {
-            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + i + "}").replacement(values[i].toString()).build());
-        }
+        formatComponent(title.title(), values);
         return title;
     }
 
     public @NotNull Title formatSubTitle(@NotNull Title title, @NotNull Object @NotNull ... values) {
-        Component component = title.subtitle();
-        for (int i = 0, len = values.length; i < len; i++) {
-            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + i + "}").replacement(values[i].toString()).build());
-        }
+        formatComponent(title.subtitle(), values);
         return title;
     }
 }

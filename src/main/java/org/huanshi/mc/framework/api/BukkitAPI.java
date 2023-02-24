@@ -4,7 +4,6 @@ import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -16,19 +15,11 @@ import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 public class BukkitAPI {
-    public static @NotNull PluginCommand getPluginCommand(@NotNull String name) {
-        return Objects.requireNonNull(Bukkit.getPluginCommand(name));
-    }
-
-    public static void registerCommandExecutor(@NotNull String name, @NotNull CommandExecutor commandExecutor) {
-        Objects.requireNonNull(Bukkit.getPluginCommand(name)).setExecutor(commandExecutor);
-    }
-
     public static void registerTabExecutor(@NotNull String name, @NotNull TabExecutor tabExecutor) {
         PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(name));
         pluginCommand.setExecutor(tabExecutor);
@@ -49,9 +40,9 @@ public class BukkitAPI {
 
     @SneakyThrows
     public static void createDataFolder(@NotNull AbstractPlugin plugin) {
-        File dataFolder = plugin.getDataFolder();
-        if (!dataFolder.exists()) {
-            Files.createDirectory(dataFolder.toPath());
+        Path path = plugin.getDataFolder().toPath();
+        if (!Files.exists(path)) {
+            Files.createDirectory(path);
         }
     }
 

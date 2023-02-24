@@ -15,35 +15,35 @@ import java.util.jar.JarFile;
 
 public class ReflectUtils {
     public static @NotNull List<Method> getMethods(@NotNull Class<?> clazz) {
-        List<Method> methodList = new LinkedList<>();
+        List<Method> methods = new LinkedList<>();
         while (clazz != null) {
-            methodList.addAll(0, Arrays.asList(clazz.getDeclaredMethods()));
+            methods.addAll(0, Arrays.asList(clazz.getDeclaredMethods()));
             clazz = clazz.getSuperclass();
         }
-        return methodList;
+        return methods;
     }
 
     public static @NotNull List<Field> getFields(@NotNull Class<?> clazz) {
-        List<Field> fieldList = new LinkedList<>();
+        List<Field> fields = new LinkedList<>();
         while (clazz != null) {
-            fieldList.addAll(0, Arrays.asList(clazz.getDeclaredFields()));
+            fields.addAll(0, Arrays.asList(clazz.getDeclaredFields()));
             clazz = clazz.getSuperclass();
         }
-        return fieldList;
+        return fields;
     }
 
     @SneakyThrows
     public static @NotNull List<Class<?>> getJarClasses(@NotNull Class<?> clazz) {
-        List<Class<?>> classList = new LinkedList<>();
+        List<Class<?>> classes = new LinkedList<>();
         try (JarFile jarFile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getFile())) {
             Enumeration<JarEntry> jarEntryEnumeration = jarFile.entries();
             while (jarEntryEnumeration.hasMoreElements()) {
                 String name = jarEntryEnumeration.nextElement().getName();
                 if (StringUtils.endsWith(name, ".class") && !StringUtils.contains(name, "$")) {
-                    classList.add(Class.forName(StringUtils.replace(name, "/", ".").replaceAll(".class", "")));
+                    classes.add(Class.forName(StringUtils.replace(name, "/", ".").replaceAll(".class", "")));
                 }
             }
         }
-        return classList;
+        return classes;
     }
 }

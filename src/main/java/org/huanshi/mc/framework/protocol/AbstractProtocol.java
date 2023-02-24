@@ -18,14 +18,14 @@ public abstract class AbstractProtocol implements HuanshiComponent, Registrable 
     private static ProtocolManager protocolManager;
 
     @Override
-    public void create(@NotNull AbstractPlugin plugin) {
+    public void onCreate(@NotNull AbstractPlugin plugin) {
         if (protocolManager == null) {
             protocolManager = ProtocolLibrary.getProtocolManager();
         }
     }
 
     @Override
-    public void load(@NotNull AbstractPlugin plugin) {}
+    public void onLoad(@NotNull AbstractPlugin plugin) {}
 
     @SneakyThrows
     @Override

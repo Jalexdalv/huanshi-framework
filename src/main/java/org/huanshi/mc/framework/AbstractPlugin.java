@@ -6,7 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.huanshi.mc.framework.annotation.Autowired;
 import org.huanshi.mc.framework.api.BukkitAPI;
 import org.huanshi.mc.framework.pojo.HuanshiComponent;
-import org.huanshi.mc.framework.engine.Scanner;
 import org.huanshi.mc.framework.lang.Zh;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,10 +15,10 @@ public abstract class AbstractPlugin extends JavaPlugin implements HuanshiCompon
     protected Component enable, disable;
 
     @Override
-    public void create(@NotNull AbstractPlugin plugin) {}
+    public void onCreate(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public void load(@NotNull AbstractPlugin plugin) {
+    public void onLoad(@NotNull AbstractPlugin plugin) {
         enable = zh.formatComponent(zh.getComponent("enable"), getName());
         disable = zh.formatComponent(zh.getComponent("disable"), getName());
     }

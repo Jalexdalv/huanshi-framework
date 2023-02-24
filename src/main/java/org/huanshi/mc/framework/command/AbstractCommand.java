@@ -16,15 +16,17 @@ public abstract class AbstractCommand implements HuanshiComponent, Registrable, 
     protected final String name = StringUtils.trimToNull(getClass().getAnnotation(Command.class).name());
 
     @Override
-    public void create(@NotNull AbstractPlugin plugin) {}
+    public void onCreate(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public void load(@NotNull AbstractPlugin plugin) {}
+    public void onLoad(@NotNull AbstractPlugin plugin) {}
 
     @Override
     public void register(@NotNull AbstractPlugin plugin) {
         BukkitAPI.registerTabExecutor(name, this);
     }
 
-    public abstract boolean hasPermission(@NotNull Player player);
+    public boolean hasPermission(@NotNull Player player) {
+        return true;
+    }
 }

@@ -1,5 +1,6 @@
 package org.huanshi.mc.framework.event;
 
+import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.huanshi.mc.framework.pojo.HuanshiComponent;
@@ -9,10 +10,11 @@ import java.util.Collection;
 
 public class ComponentScanCompleteEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    private final Collection<HuanshiComponent> huanshiComponentCollection;
+    @Getter
+    private final Collection<HuanshiComponent> huanshiComponents;
 
-    public ComponentScanCompleteEvent(@NotNull Collection<HuanshiComponent> huanshiComponentCollection) {
-        this.huanshiComponentCollection = huanshiComponentCollection;
+    public ComponentScanCompleteEvent(@NotNull Collection<HuanshiComponent> huanshiComponents) {
+        this.huanshiComponents = huanshiComponents;
     }
 
     public static @NotNull HandlerList getHandlerList() {
@@ -22,9 +24,5 @@ public class ComponentScanCompleteEvent extends Event {
     @Override
     public @NotNull HandlerList getHandlers() {
         return HANDLER_LIST;
-    }
-
-    public @NotNull Collection<HuanshiComponent> getHuanshiComponents() {
-        return huanshiComponentCollection;
     }
 }

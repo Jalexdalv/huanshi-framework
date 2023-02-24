@@ -33,18 +33,18 @@ public class HuanshiParticle extends HuanshiLocation {
     }
 
     public void play(double x1, double y1, double z1, double x2, double y2, double z2) {
-        getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, player -> player.spawnParticle(particle, this, count, correctX(offsetX, offsetZ), offsetY, correctZ(offsetX, offsetZ), speed, data));
+        getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, this::play);
     }
 
     public void play2D(@NotNull Coordinate coordinate, double startAngle, double endAngle, double radius, int repeat, double x1, double y1, double z1, double x2, double y2, double z2) {
-        List<Player> playerList = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
+        List<Player> players = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
         double stepAngle = (endAngle - startAngle) / (double) repeat;
         switch (coordinate) {
             case XY -> {
                 for (double angle = startAngle; angle < endAngle; angle = angle + stepAngle) {
                     double radians = Math.toRadians(angle), x = radius * Math.sin(radians), y = radius * Math.sin(radians), correctX = correctX(x, 0), correctZ = correctZ(x, 0);
                     add(correctX, y, correctZ);
-                    for (Player player : playerList) {
+                    for (Player player : players) {
                         play(player);
                     }
                     subtract(correctX, y, correctZ);
@@ -53,7 +53,7 @@ public class HuanshiParticle extends HuanshiLocation {
                 for (double angle = startAngle; angle < endAngle; angle = angle + stepAngle) {
                     double radians = Math.toRadians(angle), z = radius * Math.cos(radians), y = radius * Math.sin(radians), correctX = correctX(0, z), correctZ = correctZ(0, z);
                     add(correctX, y, correctZ);
-                    for (Player player : playerList) {
+                    for (Player player : players) {
                         play(player);
                     }
                     subtract(correctX, y, correctZ);
@@ -62,7 +62,7 @@ public class HuanshiParticle extends HuanshiLocation {
                 for (double angle = startAngle; angle < endAngle; angle = angle + stepAngle) {
                     double radians = Math.toRadians(angle), x = radius * Math.sin(radians), z = radius * Math.cos(radians), correctX = correctX(x, z), correctZ = correctZ(x, z);
                     add(correctX, 0, correctZ);
-                    for (Player player : playerList) {
+                    for (Player player : players) {
                         play(player);
                     }
                     subtract(correctX, 0, correctZ);
@@ -72,12 +72,12 @@ public class HuanshiParticle extends HuanshiLocation {
     }
 
     public void play3D(boolean mirror, double startAngle, double endAngle, double radius, int repeat, double x1, double y1, double z1, double x2, double y2, double z2) {
-        List<Player> playerList = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
+        List<Player> players = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
         double stepAngle = (endAngle - startAngle) / (double) repeat;
         for (double angle = startAngle; angle < endAngle; angle = angle + stepAngle) {
             double radians = Math.toRadians(angle), x = radius * Math.sin(radians), z = radius * Math.cos(radians), y = Math.sin(radians), correctX = mirror ? - correctX(x, z) : correctX(x, z), correctZ = mirror ? - correctZ(x, z) : correctZ(x, z);
             add(correctX, y, correctZ);
-            for (Player player : playerList) {
+            for (Player player : players) {
                 play(player);
             }
             subtract(correctX, 0, correctZ);
@@ -85,7 +85,7 @@ public class HuanshiParticle extends HuanshiLocation {
     }
 
     public void play2DAnimation(@NotNull AbstractPlugin plugin, @NotNull Coordinate coordinate, double startAngle, double endAngle, double radius, int repeat, long period, double x1, double y1, double z1, double x2, double y2, double z2) {
-        List<Player> playerList = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
+        List<Player> players = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
         double stepAngle = (endAngle - startAngle) / (double) repeat;
         AtomicDouble atomicDouble = new AtomicDouble(startAngle);
         switch (coordinate) {
@@ -94,7 +94,7 @@ public class HuanshiParticle extends HuanshiLocation {
                 protected boolean onRun(int repeatLeft) {
                     double radians = Math.toRadians(atomicDouble.getAndAdd(stepAngle)), x = radius * Math.sin(radians), y = radius * Math.sin(radians), correctX = correctX(x, 0), correctZ = correctZ(x, 0);
                     add(correctX, y, correctZ);
-                    for (Player player : playerList) {
+                    for (Player player : players) {
                         play(player);
                     }
                     subtract(correctX, y, correctZ);
@@ -106,7 +106,7 @@ public class HuanshiParticle extends HuanshiLocation {
                 protected boolean onRun(int repeatLeft) {
                     double radians = Math.toRadians(atomicDouble.getAndAdd(stepAngle)), z = radius * Math.cos(radians), y = radius * Math.sin(radians), correctX = correctX(0, z), correctZ = correctZ(0, z);
                     add(correctX, y, correctZ);
-                    for (Player player : playerList) {
+                    for (Player player : players) {
                         play(player);
                     }
                     subtract(correctX, y, correctZ);
@@ -118,7 +118,7 @@ public class HuanshiParticle extends HuanshiLocation {
                 protected boolean onRun(int repeatLeft) {
                     double radians = Math.toRadians(atomicDouble.getAndAdd(stepAngle)), x = radius * Math.sin(radians), z = radius * Math.cos(radians), correctX = correctX(x, z), correctZ = correctZ(x, z);
                     add(correctX, 0, correctZ);
-                    for (Player player : playerList) {
+                    for (Player player : players) {
                         play(player);
                     }
                     subtract(correctX, 0, correctZ);
@@ -129,7 +129,7 @@ public class HuanshiParticle extends HuanshiLocation {
     }
 
     public void play3DAnimation(@NotNull AbstractPlugin plugin, boolean mirror, double startAngle, double endAngle, double radius, int repeat, long period, double x1, double y1, double z1, double x2, double y2, double z2) {
-        List<Player> playerList = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
+        List<Player> players = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
         double stepAngle = (endAngle - startAngle) / (double) repeat;
         AtomicDouble atomicDouble = new AtomicDouble(startAngle);
         new Countdowner(plugin, false, false, repeat + 1, 0, period) {
@@ -137,7 +137,7 @@ public class HuanshiParticle extends HuanshiLocation {
             protected boolean onRun(int repeatLeft) {
                 double radians = Math.toRadians(atomicDouble.getAndAdd(stepAngle)), x = radius * Math.sin(radians), z = radius * Math.cos(radians), y = Math.sin(radians), correctX = mirror ? - correctX(x, z) : correctX(x, z), correctZ = mirror ? - correctZ(x, z) : correctZ(x, z);
                 add(correctX, y, correctZ);
-                for (Player player : playerList) {
+                for (Player player : players) {
                     play(player);
                 }
                 subtract(correctX, y, correctZ);
