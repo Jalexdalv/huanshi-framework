@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Objects;
 
 public class BukkitAPI {
@@ -80,5 +81,13 @@ public class BukkitAPI {
 
     public static @NotNull BukkitTask runTaskTimerAsynchronously(@NotNull AbstractPlugin plugin, @NotNull Runnable runnable, long delay, long period) {
         return Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, runnable, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+    }
+
+    public static @NotNull Collection<? extends Player> getOnlinePlayers() {
+        return Bukkit.getOnlinePlayers();
+    }
+
+    public static void sendLoggerInfo(@NotNull String message) {
+        Bukkit.getLogger().info(message);
     }
 }

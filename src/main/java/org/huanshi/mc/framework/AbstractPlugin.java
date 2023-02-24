@@ -19,8 +19,8 @@ public abstract class AbstractPlugin extends JavaPlugin implements HuanshiCompon
 
     @Override
     public void onLoad(@NotNull AbstractPlugin plugin) {
-        enable = zh.formatComponent(zh.getComponent("enable"), getName());
-        disable = zh.formatComponent(zh.getComponent("disable"), getName());
+        enable = zh.format(zh.getComponent("enable"), getName());
+        disable = zh.format(zh.getComponent("disable"), getName());
     }
 
     @SneakyThrows

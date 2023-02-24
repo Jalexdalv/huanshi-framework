@@ -1,7 +1,6 @@
 package org.huanshi.mc.framework;
 
 import lombok.SneakyThrows;
-import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.annotation.Autowired;
 import org.huanshi.mc.framework.api.BukkitAPI;
 import org.huanshi.mc.framework.event.ComponentScanCompleteEvent;

@@ -21,7 +21,7 @@ public class Timer extends BukkitRunnable {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         if (isRunning() && onRun(getDurationLeft())) {
             durationLeft = Math.max(durationLeft - period, 0L);
         } else if (onStop()) {
@@ -31,13 +31,11 @@ public class Timer extends BukkitRunnable {
 
     public synchronized void start() {
         if (isRunning()) {
-            if (reentry) {
-                if (onReentry()) {
-                    durationLeft = duration;
-                }
+            if (reentry && onReentry()) {
+                setup();
             }
         } else if (onStart()) {
-            durationLeft = duration;
+            setup();
             if (async) {
                 runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             } else {
@@ -48,6 +46,10 @@ public class Timer extends BukkitRunnable {
 
     public synchronized void stop() {
         durationLeft = 0L;
+    }
+
+    private void setup() {
+        durationLeft = duration;
     }
 
     protected boolean onReentry() {

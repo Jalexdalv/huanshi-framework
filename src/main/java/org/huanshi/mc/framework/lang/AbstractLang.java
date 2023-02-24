@@ -25,24 +25,14 @@ public abstract class AbstractLang extends AbstractConfig {
         return miniMessage.deserialize(getString(path));
     }
 
-    public @NotNull Component formatComponent(@NotNull Component component, @NotNull Object @NotNull ... values) {
-        for (int i = 0, len = values.length; i < len; i++) {
-            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + i + "}").replacement(values[i].toString()).build());
-        }
-        return component;
-    }
-
     public @NotNull Title getTitle(@NotNull Component titleComponent, @NotNull Component subTitleComponent, long fideIn, long stay, long fideOut) {
         return Title.title(titleComponent, subTitleComponent, Title.Times.times(Duration.ofMillis(fideIn), Duration.ofMillis(stay), Duration.ofMillis(fideOut)));
     }
 
-    public @NotNull Title formatTitle(@NotNull Title title, @NotNull Object @NotNull ... values) {
-        formatComponent(title.title(), values);
-        return title;
-    }
-
-    public @NotNull Title formatSubTitle(@NotNull Title title, @NotNull Object @NotNull ... values) {
-        formatComponent(title.subtitle(), values);
-        return title;
+    public @NotNull Component format(@NotNull Component component, @NotNull Object @NotNull ... values) {
+        for (int i = 0, len = values.length; i < len; i++) {
+            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + i + "}").replacement(values[i].toString()).build());
+        }
+        return component;
     }
 }

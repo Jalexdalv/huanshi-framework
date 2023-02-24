@@ -22,7 +22,7 @@ public class Countdowner extends BukkitRunnable {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         if (isRunning() && onRun(getRepeatLeft())) {
             repeatLeft--;
         } else if (onStop()) {
@@ -32,13 +32,11 @@ public class Countdowner extends BukkitRunnable {
 
     public synchronized void start() {
         if (isRunning()) {
-            if (reentry) {
-                if (onReentry()) {
-                    repeatLeft = repeat;
-                }
+            if (reentry && onReentry()) {
+                setup();
             }
         } else if (onStart()) {
-            repeatLeft = repeat;
+            setup();
             if (async) {
                 runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             } else {
@@ -49,6 +47,10 @@ public class Countdowner extends BukkitRunnable {
 
     public synchronized void stop() {
         repeatLeft = 0;
+    }
+
+    private void setup() {
+        repeatLeft = repeat;
     }
 
     protected boolean onReentry() {
