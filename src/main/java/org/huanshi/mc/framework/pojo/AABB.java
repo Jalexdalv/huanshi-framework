@@ -34,8 +34,8 @@ public class AABB {
         return axisAlignedBB;
     }
 
-    public <T extends Entity> boolean isInAABB(@NotNull T t) {
-        Location location = t.getLocation();
+    public boolean isInAABB(@NotNull Entity entity) {
+        Location location = entity.getLocation();
         double x = location.getX(), z = location.getZ();
         return (vector12.getX() * (z - vector1.getZ()) - (x - vector1.getX()) * vector12.getZ()) * (vector34.getX() * (z - vector3.getZ()) - (x - vector3.getX()) * vector34.getZ()) >= 0 && (vector23.getX() * (z - vector2.getZ()) - (x - vector2.getX()) * vector23.getZ()) * (vector41.getX() * (z - vector4.getZ()) - (x - vector4.getX()) * vector41.getZ()) >= 0;
     }

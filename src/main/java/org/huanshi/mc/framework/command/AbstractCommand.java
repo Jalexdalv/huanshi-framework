@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractCommand implements HuanshiComponent, Registrable, TabExecutor {
     @Getter
-    protected final String name = StringUtils.trimToNull(getClass().getAnnotation(Command.class).name());
+    protected final @NotNull String name = StringUtils.trimToNull(getClass().getAnnotation(Command.class).name());
 
     @Override
     public void onCreate(@NotNull AbstractPlugin plugin) {}

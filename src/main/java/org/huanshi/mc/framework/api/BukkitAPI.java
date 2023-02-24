@@ -5,12 +5,12 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitTask;
 import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.command.AbstractCommand;
+import org.huanshi.mc.framework.listener.AbstractListener;
 import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,13 +21,13 @@ import java.util.Collection;
 import java.util.Objects;
 
 public class BukkitAPI {
-    public static void registerTabExecutor(@NotNull String name, @NotNull TabExecutor tabExecutor) {
+    public static void registerTabExecutor(@NotNull String name, @NotNull AbstractCommand command) {
         PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(name));
-        pluginCommand.setExecutor(tabExecutor);
-        pluginCommand.setTabCompleter(tabExecutor);
+        pluginCommand.setExecutor(command);
+        pluginCommand.setTabCompleter(command);
     }
 
-    public static void registerEvent(@NotNull AbstractPlugin plugin, @NotNull Listener listener) {
+    public static void registerEvent(@NotNull AbstractPlugin plugin, @NotNull AbstractListener listener) {
         Bukkit.getPluginManager().registerEvents(listener, plugin);
     }
 
