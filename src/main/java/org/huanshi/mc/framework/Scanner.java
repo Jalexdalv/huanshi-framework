@@ -22,7 +22,7 @@ public class Scanner {
     private static final Map<Class<? extends HuanshiComponent>, HuanshiComponent> LOADED_HUANSHI_COMPONENT_MAP = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public static void scan(@NotNull AbstractPlugin plugin) {
+    public static void scan(@NotNull HuanshiPlugin plugin) {
         for (Class<?> clazz : ReflectUtils.getJarClasses(plugin.getClass())) {
             int modifiers = clazz.getModifiers();
             if (HuanshiComponent.class.isAssignableFrom(clazz) && !Modifier.isAbstract(modifiers) && !Modifier.isInterface(modifiers)) {
@@ -35,10 +35,10 @@ public class Scanner {
 
     @SuppressWarnings("unchecked")
     @SneakyThrows
-    private static @Nullable HuanshiComponent setup(@NotNull AbstractPlugin plugin, @NotNull Class<? extends HuanshiComponent> clazz, @NotNull List<Class<? extends HuanshiComponent>> autowiredClasses) {
+    private static @Nullable HuanshiComponent setup(@NotNull HuanshiPlugin plugin, @NotNull Class<? extends HuanshiComponent> clazz, @NotNull List<Class<? extends HuanshiComponent>> autowiredClasses) {
         HuanshiComponent huanshiComponent = LOADED_HUANSHI_COMPONENT_MAP.get(clazz);
         if (huanshiComponent == null) {
-            huanshiComponent = AbstractPlugin.class.isAssignableFrom(clazz) ? plugin : clazz.getConstructor().newInstance();
+            huanshiComponent = HuanshiPlugin.class.isAssignableFrom(clazz) ? plugin : clazz.getConstructor().newInstance();
             for (Field field : ReflectUtils.getFields(clazz)) {
                 field.setAccessible(true);
                 if (field.getAnnotation(Autowired.class) != null) {

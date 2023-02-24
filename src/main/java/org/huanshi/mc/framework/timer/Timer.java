@@ -1,17 +1,17 @@
 package org.huanshi.mc.framework.timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.HuanshiPlugin;
 import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Timer extends BukkitRunnable {
-    protected final AbstractPlugin plugin;
+    protected final HuanshiPlugin plugin;
     protected final boolean async, reentry;
     protected final long duration, delay, period;
     protected long durationLeft;
 
-    public Timer(@NotNull AbstractPlugin plugin, boolean async, boolean reentry, long duration, long delay, long period) {
+    public Timer(@NotNull HuanshiPlugin plugin, boolean async, boolean reentry, long duration, long delay, long period) {
         this.plugin = plugin;
         this.async = async;
         this.reentry = reentry;

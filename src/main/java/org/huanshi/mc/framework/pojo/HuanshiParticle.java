@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.HuanshiPlugin;
 import org.huanshi.mc.framework.timer.Countdowner;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -84,7 +84,7 @@ public class HuanshiParticle extends HuanshiLocation {
         }
     }
 
-    public void play2DAnimation(@NotNull AbstractPlugin plugin, @NotNull Coordinate coordinate, double startAngle, double endAngle, double radius, int repeat, long period, double x1, double y1, double z1, double x2, double y2, double z2) {
+    public void play2DAnimation(@NotNull HuanshiPlugin plugin, @NotNull Coordinate coordinate, double startAngle, double endAngle, double radius, int repeat, long period, double x1, double y1, double z1, double x2, double y2, double z2) {
         List<Player> players = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
         double stepAngle = (endAngle - startAngle) / (double) repeat;
         AtomicDouble atomicDouble = new AtomicDouble(startAngle);
@@ -128,7 +128,7 @@ public class HuanshiParticle extends HuanshiLocation {
         }
     }
 
-    public void play3DAnimation(@NotNull AbstractPlugin plugin, boolean mirror, double startAngle, double endAngle, double radius, int repeat, long period, double x1, double y1, double z1, double x2, double y2, double z2) {
+    public void play3DAnimation(@NotNull HuanshiPlugin plugin, boolean mirror, double startAngle, double endAngle, double radius, int repeat, long period, double x1, double y1, double z1, double x2, double y2, double z2) {
         List<Player> players = getNearbyEntity(Player.class, x1, y1, z1, x2, y2, z2, null, null);
         double stepAngle = (endAngle - startAngle) / (double) repeat;
         AtomicDouble atomicDouble = new AtomicDouble(startAngle);

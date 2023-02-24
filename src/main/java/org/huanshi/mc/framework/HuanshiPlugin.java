@@ -9,16 +9,16 @@ import org.huanshi.mc.framework.pojo.HuanshiComponent;
 import org.huanshi.mc.framework.lang.Zh;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractPlugin extends JavaPlugin implements HuanshiComponent {
+public abstract class HuanshiPlugin extends JavaPlugin implements HuanshiComponent {
     @Autowired
     private Zh zh;
     protected Component enable, disable;
 
     @Override
-    public void onCreate(@NotNull AbstractPlugin plugin) {}
+    public void onCreate(@NotNull HuanshiPlugin plugin) {}
 
     @Override
-    public void onLoad(@NotNull AbstractPlugin plugin) {
+    public void onLoad(@NotNull HuanshiPlugin plugin) {
         enable = zh.format(zh.getComponent("enable"), getName());
         disable = zh.format(zh.getComponent("disable"), getName());
     }
