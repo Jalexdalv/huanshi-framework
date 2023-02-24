@@ -27,16 +27,16 @@ public class BukkitAPI {
         pluginCommand.setTabCompleter(tabExecutor);
     }
 
+    public static void registerEvent(@NotNull AbstractPlugin plugin, @NotNull Listener listener) {
+        Bukkit.getPluginManager().registerEvents(listener, plugin);
+    }
+
     public static @Nullable Player findPlayer(@NotNull String targetPlayerName) {
         return Bukkit.getPlayerExact(targetPlayerName);
     }
 
     public static @Nullable World findWorld(@NotNull String worldName) {
         return Bukkit.getWorld(worldName);
-    }
-
-    public static void registerEvent(@NotNull AbstractPlugin plugin, @NotNull Listener listener) {
-        Bukkit.getPluginManager().registerEvents(listener, plugin);
     }
 
     @SneakyThrows
@@ -49,6 +49,10 @@ public class BukkitAPI {
 
     public static void sendConsoleMessage(@NotNull Component component) {
         Bukkit.getConsoleSender().sendMessage(component);
+    }
+
+    public static void sendLoggerInfo(@NotNull String message) {
+        Bukkit.getLogger().info(message);
     }
 
     public static void cancelAllTasks(@NotNull AbstractPlugin plugin) {
@@ -85,9 +89,5 @@ public class BukkitAPI {
 
     public static @NotNull Collection<? extends Player> getOnlinePlayers() {
         return Bukkit.getOnlinePlayers();
-    }
-
-    public static void sendLoggerInfo(@NotNull String message) {
-        Bukkit.getLogger().info(message);
     }
 }

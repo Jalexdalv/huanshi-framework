@@ -11,18 +11,13 @@ import org.huanshi.mc.framework.annotation.ProtocolHandler;
 import org.huanshi.mc.framework.utils.ReflectUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public abstract class AbstractProtocol implements HuanshiComponent, Registrable {
-    private static ProtocolManager protocolManager;
+    protected static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
     @Override
-    public void onCreate(@NotNull AbstractPlugin plugin) {
-        if (protocolManager == null) {
-            protocolManager = ProtocolLibrary.getProtocolManager();
-        }
-    }
+    public void onCreate(@NotNull AbstractPlugin plugin) {}
 
     @Override
     public void onLoad(@NotNull AbstractPlugin plugin) {}
@@ -32,12 +27,8 @@ public abstract class AbstractProtocol implements HuanshiComponent, Registrable 
     public void register(@NotNull AbstractPlugin plugin) {
         for (Method method : ReflectUtils.getMethods(getClass())) {
             if (method.getAnnotation(ProtocolHandler.class) != null && method.getReturnType() == PacketAdapter.class) {
-                getProtocolManager().addPacketListener((PacketAdapter) method.invoke(this));
+                PROTOCOL_MANAGER.addPacketListener((PacketAdapter) method.invoke(this));
             }
         }
-    }
-
-    protected @NotNull ProtocolManager getProtocolManager() {
-        return protocolManager;
     }
 }

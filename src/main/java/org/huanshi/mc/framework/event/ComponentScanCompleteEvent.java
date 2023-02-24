@@ -9,9 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 
 public class ComponentScanCompleteEvent extends Event {
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    protected static final HandlerList HANDLER_LIST = new HandlerList();
     @Getter
-    private final Collection<HuanshiComponent> huanshiComponents;
+    protected final Collection<HuanshiComponent> huanshiComponents;
 
     public ComponentScanCompleteEvent(@NotNull Collection<HuanshiComponent> huanshiComponents) {
         this.huanshiComponents = huanshiComponents;
