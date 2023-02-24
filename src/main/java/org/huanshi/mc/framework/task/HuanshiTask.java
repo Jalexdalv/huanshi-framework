@@ -17,17 +17,17 @@ public abstract class HuanshiTask extends BukkitRunnable implements HuanshiCompo
     public abstract void run();
 
     @Override
-    public void onCreate(@NotNull HuanshiPlugin plugin) {}
+    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void onLoad(@NotNull HuanshiPlugin plugin) {}
+    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void register(@NotNull HuanshiPlugin plugin) {
+    public void register(@NotNull HuanshiPlugin huanshiPlugin) {
         if (async) {
-            runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+            runTaskTimerAsynchronously(huanshiPlugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
         } else {
-            runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+            runTaskTimer(huanshiPlugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
         }
     }
 }

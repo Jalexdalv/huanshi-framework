@@ -17,10 +17,10 @@ public abstract class HuanshiMapper implements HuanshiComponent {
     private MainConfig mainConfig;
 
     @Override
-    public void onCreate(@NotNull HuanshiPlugin plugin) {}
+    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void onLoad(@NotNull HuanshiPlugin plugin) {
+    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {
         if (hikariDataSource == null) {
             HikariConfig hikariConfig = new HikariConfig();
             hikariConfig.setConnectionTimeout(mainConfig.getLong("data-source.mysql.connection-timeout"));

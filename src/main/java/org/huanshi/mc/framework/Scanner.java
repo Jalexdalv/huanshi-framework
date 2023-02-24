@@ -22,12 +22,12 @@ public class Scanner {
     private static final Map<Class<? extends HuanshiComponent>, HuanshiComponent> LOADED_HUANSHI_COMPONENT_MAP = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public static void scan(@NotNull HuanshiPlugin plugin) {
-        for (Class<?> clazz : ReflectUtils.getJarClasses(plugin.getClass())) {
+    public static void scan(@NotNull HuanshiPlugin huanshiPlugin) {
+        for (Class<?> clazz : ReflectUtils.getJarClasses(huanshiPlugin.getClass())) {
             int modifiers = clazz.getModifiers();
             if (HuanshiComponent.class.isAssignableFrom(clazz) && !Modifier.isAbstract(modifiers) && !Modifier.isInterface(modifiers)) {
                 Class<? extends HuanshiComponent> huanshiComponentClass = (Class<? extends HuanshiComponent>) clazz;
-                LOADED_HUANSHI_COMPONENT_MAP.put(huanshiComponentClass, setup(plugin, huanshiComponentClass, new LinkedList<>(){{ add(huanshiComponentClass); }}));
+                LOADED_HUANSHI_COMPONENT_MAP.put(huanshiComponentClass, setup(huanshiPlugin, huanshiComponentClass, new LinkedList<>(){{ add(huanshiComponentClass); }}));
             }
         }
         BukkitAPI.callEvent(new ComponentScanCompleteEvent(Collections.unmodifiableCollection(LOADED_HUANSHI_COMPONENT_MAP.values())));
@@ -35,10 +35,10 @@ public class Scanner {
 
     @SuppressWarnings("unchecked")
     @SneakyThrows
-    private static @Nullable HuanshiComponent setup(@NotNull HuanshiPlugin plugin, @NotNull Class<? extends HuanshiComponent> clazz, @NotNull List<Class<? extends HuanshiComponent>> autowiredClasses) {
+    private static @Nullable HuanshiComponent setup(@NotNull HuanshiPlugin huanshiPlugin, @NotNull Class<? extends HuanshiComponent> clazz, @NotNull List<Class<? extends HuanshiComponent>> autowiredClasses) {
         HuanshiComponent huanshiComponent = LOADED_HUANSHI_COMPONENT_MAP.get(clazz);
         if (huanshiComponent == null) {
-            huanshiComponent = HuanshiPlugin.class.isAssignableFrom(clazz) ? plugin : clazz.getConstructor().newInstance();
+            huanshiComponent = HuanshiPlugin.class.isAssignableFrom(clazz) ? huanshiPlugin : clazz.getConstructor().newInstance();
             for (Field field : ReflectUtils.getFields(clazz)) {
                 field.setAccessible(true);
                 if (field.getAnnotation(Autowired.class) != null) {
@@ -52,15 +52,15 @@ public class Scanner {
                         }
                         Class<? extends HuanshiComponent> componentClass = (Class<? extends HuanshiComponent>) fieldClass;
                         autowiredClasses.add(componentClass);
-                        field.set(huanshiComponent, setup(plugin, componentClass, autowiredClasses));
+                        field.set(huanshiComponent, setup(huanshiPlugin, componentClass, autowiredClasses));
                         autowiredClasses.remove(fieldClass);
                     }
                 }
             }
-            huanshiComponent.onCreate(plugin);
-            huanshiComponent.onLoad(plugin);
+            huanshiComponent.onCreate(huanshiPlugin);
+            huanshiComponent.onLoad(huanshiPlugin);
             if (Registrable.class.isAssignableFrom(clazz)) {
-                ((Registrable) huanshiComponent).register(plugin);
+                ((Registrable) huanshiComponent).register(huanshiPlugin);
             }
         }
         return huanshiComponent;

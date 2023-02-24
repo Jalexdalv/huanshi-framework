@@ -9,13 +9,13 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class HuanshiListener implements HuanshiComponent, Registrable, Listener {
     @Override
-    public void onCreate(@NotNull HuanshiPlugin plugin) {}
+    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void onLoad(@NotNull HuanshiPlugin plugin) {}
+    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void register(@NotNull HuanshiPlugin plugin) {
-        BukkitAPI.registerEvent(plugin, this);
+    public void register(@NotNull HuanshiPlugin huanshiPlugin) {
+        BukkitAPI.registerEvent(huanshiPlugin, this);
     }
 }

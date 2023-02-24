@@ -17,14 +17,14 @@ public abstract class HuanshiProtocol implements HuanshiComponent, Registrable {
     protected static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
     @Override
-    public void onCreate(@NotNull HuanshiPlugin plugin) {}
+    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void onLoad(@NotNull HuanshiPlugin plugin) {}
+    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @SneakyThrows
     @Override
-    public void register(@NotNull HuanshiPlugin plugin) {
+    public void register(@NotNull HuanshiPlugin huanshiPlugin) {
         for (Method method : ReflectUtils.getMethods(getClass())) {
             if (method.getAnnotation(ProtocolHandler.class) != null && method.getReturnType() == PacketAdapter.class) {
                 PROTOCOL_MANAGER.addPacketListener((PacketAdapter) method.invoke(this));

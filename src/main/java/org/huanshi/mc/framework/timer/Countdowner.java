@@ -6,14 +6,14 @@ import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Countdowner extends BukkitRunnable {
-    protected final HuanshiPlugin plugin;
+    protected final HuanshiPlugin huanshiPlugin;
     protected final boolean async, reentry;
     protected final int repeat;
     protected final long delay, period;
     protected int repeatLeft;
 
-    public Countdowner(@NotNull HuanshiPlugin plugin, boolean async, boolean reentry, int repeat, long delay, long period) {
-        this.plugin = plugin;
+    public Countdowner(@NotNull HuanshiPlugin huanshiPlugin, boolean async, boolean reentry, int repeat, long delay, long period) {
+        this.huanshiPlugin = huanshiPlugin;
         this.async = async;
         this.reentry = reentry;
         this.repeat = repeat;
@@ -38,9 +38,9 @@ public class Countdowner extends BukkitRunnable {
         } else if (onStart()) {
             setup();
             if (async) {
-                runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+                runTaskTimerAsynchronously(huanshiPlugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             } else {
-                runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+                runTaskTimer(huanshiPlugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             }
         }
     }

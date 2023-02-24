@@ -4,5 +4,5 @@ import org.huanshi.mc.framework.HuanshiPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public interface Registrable {
-    void register(@NotNull HuanshiPlugin plugin) throws Throwable;
+    void register(@NotNull HuanshiPlugin huanshiPlugin) throws Throwable;
 }

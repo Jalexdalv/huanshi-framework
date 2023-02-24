@@ -18,14 +18,14 @@ public abstract sealed class AbstractConfig implements HuanshiComponent permits 
     protected YamlConfiguration configuration;
 
     @Override
-    public void onCreate(@NotNull HuanshiPlugin plugin) {
-        file = new File(plugin.getDataFolder(), fileName);
+    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {
+        file = new File(huanshiPlugin.getDataFolder(), fileName);
     }
 
     @SneakyThrows
     @Override
-    public void onLoad(@NotNull HuanshiPlugin plugin) {
-        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource(fileName)))) {
+    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(huanshiPlugin.getResource(fileName)))) {
             if (file.exists()) {
                 configuration = YamlConfiguration.loadConfiguration(file);
                 configuration.setDefaults(YamlConfiguration.loadConfiguration(inputStreamReader));

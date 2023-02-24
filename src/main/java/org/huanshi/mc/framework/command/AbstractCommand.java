@@ -15,13 +15,13 @@ public abstract sealed class AbstractCommand implements HuanshiComponent, Regist
     protected final @NotNull String name = StringUtils.trimToNull(getClass().getAnnotation(Command.class).name());
 
     @Override
-    public void onCreate(@NotNull HuanshiPlugin plugin) {}
+    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void onLoad(@NotNull HuanshiPlugin plugin) {}
+    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void register(@NotNull HuanshiPlugin plugin) {
+    public void register(@NotNull HuanshiPlugin huanshiPlugin) {
         BukkitAPI.registerTabExecutor(name, this);
     }
 }

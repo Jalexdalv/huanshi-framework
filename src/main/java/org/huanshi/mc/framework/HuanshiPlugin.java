@@ -15,10 +15,10 @@ public abstract class HuanshiPlugin extends JavaPlugin implements HuanshiCompone
     protected Component enable, disable;
 
     @Override
-    public void onCreate(@NotNull HuanshiPlugin plugin) {}
+    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void onLoad(@NotNull HuanshiPlugin plugin) {
+    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {
         enable = zh.format(zh.getComponent("enable"), getName());
         disable = zh.format(zh.getComponent("disable"), getName());
     }
