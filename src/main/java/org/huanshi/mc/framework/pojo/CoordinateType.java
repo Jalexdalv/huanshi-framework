@@ -1,5 +1,5 @@
 package org.huanshi.mc.framework.pojo;
 
-public enum Coordinate {
+public enum CoordinateType {
     XY, YZ, XZ
 }

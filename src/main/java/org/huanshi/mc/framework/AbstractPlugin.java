@@ -5,20 +5,20 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.huanshi.mc.framework.annotation.Autowired;
 import org.huanshi.mc.framework.api.BukkitAPI;
-import org.huanshi.mc.framework.pojo.HuanshiComponent;
+import org.huanshi.mc.framework.pojo.IComponent;
 import org.huanshi.mc.framework.lang.Zh;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class HuanshiPlugin extends JavaPlugin implements HuanshiComponent {
+public abstract class AbstractPlugin extends JavaPlugin implements IComponent {
     @Autowired
     private Zh zh;
-    protected Component enable, disable;
+    private Component enable, disable;
 
     @Override
-    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {}
+    public void onCreate(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {
+    public void onLoad(@NotNull AbstractPlugin plugin) {
         enable = zh.format(zh.getComponent("enable"), getName());
         disable = zh.format(zh.getComponent("disable"), getName());
     }

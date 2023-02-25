@@ -1,3 +1,3 @@
 package org.huanshi.mc.framework;
 
-public class Plugin extends HuanshiPlugin {}
+public class Plugin extends AbstractPlugin {}

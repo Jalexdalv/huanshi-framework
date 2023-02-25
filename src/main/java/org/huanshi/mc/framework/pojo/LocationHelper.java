@@ -13,10 +13,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class HuanshiLocation extends Location {
-    protected double sin, cos;
+public class LocationHelper extends Location {
+    private final double sin, cos;
 
-    public HuanshiLocation(@NotNull Location location) {
+    public LocationHelper(@NotNull Location location) {
         super(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         double radians = Math.toRadians(location.getYaw());
         sin = Math.sin(radians);
@@ -47,12 +47,12 @@ public class HuanshiLocation extends Location {
         return new AABB(new Vector(getX() + correctX(x1, z1), getY() + y1, getZ() + correctZ(x1, z1)), new Vector(getX() + correctX(-x2, z2), getY() + y1, getZ() + correctZ(-x2, z2)), new Vector(getX() + correctX(x2, z2), getY() + y2, getZ() + correctZ(x2, z2)), new Vector(getX() + correctX(-x1, z1), getY() + y2, getZ() + correctZ(-x1, z1)));
     }
 
-    public @NotNull <T extends Entity> List<T> getNearbyEntity(@NotNull Class<T> clazz, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable EntityHandler<T> entityHandler) {
+    public @NotNull <T extends Entity> List<T> getNearbyEntity(@NotNull Class<T> clazz, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable IEntityHandler<T> entityHandler) {
         return getNearbyEntityExceptPlayer(null, clazz, x1, y1, z1, x2, y2, z2, predicate, entityHandler);
     }
 
     @SuppressWarnings("unchecked")
-    public @NotNull <T extends Entity> List<T> getNearbyEntityExceptPlayer(@Nullable Player player, @NotNull Class<T> clazz, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable EntityHandler<T> entityHandler) {
+    public @NotNull <T extends Entity> List<T> getNearbyEntityExceptPlayer(@Nullable Player player, @NotNull Class<T> clazz, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable IEntityHandler<T> entityHandler) {
         List<T> entities = new LinkedList<>();
         AABB aabb = getAABB(x1, y1, z1, x2, y2, z2);
         ((CraftWorld) getWorld()).getHandle().getEntityLookup().getEntities(player == null ? null : ((CraftEntity) player).getHandle(), aabb.getAxisAlignedBB(), null, entity -> {

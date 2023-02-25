@@ -4,12 +4,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import org.huanshi.mc.framework.config.HuanshiConfig;
+import org.huanshi.mc.framework.config.AbstractConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 
-public abstract class HuanshiLang extends HuanshiConfig {
+public abstract class AbstractLang extends AbstractConfig {
     protected static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 
     public @NotNull Component getComponent(@NotNull String path) {

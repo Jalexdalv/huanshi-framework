@@ -3,18 +3,18 @@ package org.huanshi.mc.framework.event;
 import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.huanshi.mc.framework.pojo.HuanshiComponent;
+import org.huanshi.mc.framework.pojo.IComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
 public class ComponentScanCompleteEvent extends Event {
-    protected static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
     @Getter
-    protected final Collection<HuanshiComponent> huanshiComponents;
+    private final Collection<IComponent> components;
 
-    public ComponentScanCompleteEvent(@NotNull Collection<HuanshiComponent> huanshiComponents) {
-        this.huanshiComponents = huanshiComponents;
+    public ComponentScanCompleteEvent(@NotNull Collection<IComponent> components) {
+        this.components = components;
     }
 
     public static @NotNull HandlerList getHandlerList() {

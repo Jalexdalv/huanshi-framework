@@ -1,9 +1,9 @@
 package org.huanshi.mc.framework.timer;
 
 public class Cooldowner {
-    protected final boolean reentry;
-    protected final long duration;
-    protected long time;
+    private final boolean reentry;
+    private final long duration;
+    private long time;
 
     public Cooldowner(boolean reentry, long duration) {
         this.reentry = reentry;

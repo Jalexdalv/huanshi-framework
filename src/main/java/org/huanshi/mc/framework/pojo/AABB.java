@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 
 public class AABB {
-    protected AxisAlignedBB axisAlignedBB;
-    protected Vector vector1, vector2, vector3, vector4, vector12, vector34, vector23, vector41;
+    private final AxisAlignedBB axisAlignedBB;
+    private final Vector vector1, vector2, vector3, vector4, vector12, vector34, vector23, vector41;
 
     public AABB(@NotNull Vector vector1, @NotNull Vector vector2, @NotNull Vector vector3, @NotNull Vector vector4) {
         this.vector1 = vector1;

@@ -1,6 +1,6 @@
 package org.huanshi.mc.framework.lang;
 
-import org.huanshi.mc.framework.annotation.Config;
+import org.huanshi.mc.framework.annotation.HuanshiConfig;
 
-@Config(file = "lang/zh.yml")
-public class Zh extends HuanshiLang {}
+@HuanshiConfig(file = "lang/zh.yml")
+public class Zh extends AbstractLang {}

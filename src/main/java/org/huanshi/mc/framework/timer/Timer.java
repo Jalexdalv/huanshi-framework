@@ -1,18 +1,18 @@
 package org.huanshi.mc.framework.timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.huanshi.mc.framework.HuanshiPlugin;
+import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Timer extends BukkitRunnable {
-    protected final HuanshiPlugin huanshiPlugin;
-    protected final boolean async, reentry;
-    protected final long duration, delay, period;
-    protected long durationLeft;
+    private final AbstractPlugin plugin;
+    private final boolean async, reentry;
+    private final long duration, delay, period;
+    private long durationLeft;
 
-    public Timer(@NotNull HuanshiPlugin huanshiPlugin, boolean async, boolean reentry, long duration, long delay, long period) {
-        this.huanshiPlugin = huanshiPlugin;
+    public Timer(@NotNull AbstractPlugin plugin, boolean async, boolean reentry, long duration, long delay, long period) {
+        this.plugin = plugin;
         this.async = async;
         this.reentry = reentry;
         this.duration = duration;
@@ -37,9 +37,9 @@ public class Timer extends BukkitRunnable {
         } else if (onStart()) {
             setup();
             if (async) {
-                runTaskTimerAsynchronously(huanshiPlugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+                runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             } else {
-                runTaskTimer(huanshiPlugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+                runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             }
         }
     }

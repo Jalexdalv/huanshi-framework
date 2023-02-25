@@ -3,24 +3,24 @@ package org.huanshi.mc.framework.mapper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
-import org.huanshi.mc.framework.HuanshiPlugin;
-import org.huanshi.mc.framework.pojo.HuanshiComponent;
+import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.pojo.IComponent;
 import org.huanshi.mc.framework.annotation.Autowired;
 import org.huanshi.mc.framework.config.MainConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 
-public abstract class HuanshiMapper implements HuanshiComponent {
+public abstract class AbstractMapper implements IComponent {
     private static HikariDataSource hikariDataSource;
     @Autowired
     private MainConfig mainConfig;
 
     @Override
-    public void onCreate(@NotNull HuanshiPlugin huanshiPlugin) {}
+    public void onCreate(@NotNull AbstractPlugin plugin) {}
 
     @Override
-    public void onLoad(@NotNull HuanshiPlugin huanshiPlugin) {
+    public void onLoad(@NotNull AbstractPlugin plugin) {
         if (hikariDataSource == null) {
             HikariConfig hikariConfig = new HikariConfig();
             hikariConfig.setConnectionTimeout(mainConfig.getLong("data-source.mysql.connection-timeout"));

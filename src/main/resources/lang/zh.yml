@@ -1,2 +1,2 @@
-enable: '[{0}] <gradient:green:white>插件已加载</gradient>'
-disable: '[{0}] <gradient:green:white>插件已卸载</gradient>'
+enable: '<gray>[</gray><aqua>{0}</aqua><gray>]</gray> <gradient:green:white>插件已加载</gradient>'
+disable: '<gray>[</gray><aqua>{0}</aqua><gray>]</gray> <gradient:green:white>插件已卸载</gradient>'
