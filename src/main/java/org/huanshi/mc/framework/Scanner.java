@@ -1,10 +1,7 @@
 package org.huanshi.mc.framework;
 
-import com.google.common.collect.ImmutableList;
 import lombok.SneakyThrows;
 import org.huanshi.mc.framework.annotation.Autowired;
-import org.huanshi.mc.framework.api.BukkitAPI;
-import org.huanshi.mc.framework.event.ComponentScanCompleteEvent;
 import org.huanshi.mc.framework.pojo.IComponent;
 import org.huanshi.mc.framework.pojo.Registrable;
 import org.huanshi.mc.framework.utils.ReflectUtils;
@@ -30,7 +27,6 @@ public class Scanner {
                 LOADED_COMPONENT_MAP.put(componentClass, setup(plugin, componentClass, new LinkedList<>(){{ add(componentClass); }}));
             }
         }
-        BukkitAPI.callEvent(new ComponentScanCompleteEvent(ImmutableList.copyOf(LOADED_COMPONENT_MAP.values())));
     }
 
     @SuppressWarnings("unchecked")
