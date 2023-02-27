@@ -1,5 +1,6 @@
 package org.huanshi.mc.framework.pojo;
 
+import lombok.Getter;
 import net.minecraft.world.phys.AxisAlignedBB;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 
 public class AABB {
+    @Getter
     private final AxisAlignedBB axisAlignedBB;
     private final Vector vector1, vector2, vector3, vector4, vector12, vector34, vector23, vector41;
 
@@ -28,10 +30,6 @@ public class AABB {
         double[] zs = new double[] {vector1.getZ(), vector2.getZ(), vector3.getZ(), vector4.getZ()};
         Arrays.sort(zs);
         axisAlignedBB = new AxisAlignedBB(xs[0], ys[0], zs[0], xs[3], ys[3], zs[3]);
-    }
-
-    public @NotNull AxisAlignedBB getAxisAlignedBB() {
-        return axisAlignedBB;
     }
 
     public boolean isInAABB(@NotNull Entity entity) {
