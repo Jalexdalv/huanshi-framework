@@ -53,8 +53,8 @@ public class Scanner {
                     }
                 }
             }
-            component.onCreate(plugin);
-            component.onLoad(plugin);
+            component.superOnCreate(plugin);
+            component.superOnLoad(plugin);
             if (Registrable.class.isAssignableFrom(clazz)) {
                 ((Registrable) component).register(plugin);
             }
