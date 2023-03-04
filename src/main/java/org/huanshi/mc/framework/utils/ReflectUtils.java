@@ -16,37 +16,37 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ReflectUtils {
-    public static @NotNull List<Class<?>> getClasses(@NotNull Class<?> clazz) {
-        LinkedList<Class<?>> classList = new LinkedList<>();
-        while (clazz != null) {
-            classList.addFirst(clazz);
-            clazz = clazz.getSuperclass();
+    public static @NotNull List<Class<?>> getClasses(@NotNull Class<?> cls) {
+        LinkedList<Class<?>> classes = new LinkedList<>();
+        while (cls != null) {
+            classes.addFirst(cls);
+            cls = cls.getSuperclass();
         }
-        return classList;
+        return classes;
     }
 
-    public static @NotNull List<Method> getMethods(@NotNull Class<?> clazz) {
+    public static @NotNull List<Method> getMethods(@NotNull Class<?> cls) {
         List<Method> methods = new LinkedList<>();
-        while (clazz != null) {
-            methods.addAll(0, Arrays.asList(clazz.getDeclaredMethods()));
-            clazz = clazz.getSuperclass();
+        while (cls != null) {
+            methods.addAll(0, Arrays.asList(cls.getDeclaredMethods()));
+            cls = cls.getSuperclass();
         }
         return methods;
     }
 
-    public static @NotNull List<Field> getFields(@NotNull Class<?> clazz) {
+    public static @NotNull List<Field> getFields(@NotNull Class<?> cls) {
         List<Field> fields = new LinkedList<>();
-        while (clazz != null) {
-            fields.addAll(0, Arrays.asList(clazz.getDeclaredFields()));
-            clazz = clazz.getSuperclass();
+        while (cls != null) {
+            fields.addAll(0, Arrays.asList(cls.getDeclaredFields()));
+            cls = cls.getSuperclass();
         }
         return fields;
     }
 
     @SneakyThrows
-    public static @NotNull List<Class<?>> getJarClasses(@NotNull Class<?> clazz) {
+    public static @NotNull List<Class<?>> getJarClasses(@NotNull Class<?> cls) {
         List<Class<?>> classes = new LinkedList<>();
-        try (JarFile jarFile = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getFile())) {
+        try (JarFile jarFile = new JarFile(cls.getProtectionDomain().getCodeSource().getLocation().getFile())) {
             Enumeration<JarEntry> jarEntryEnumeration = jarFile.entries();
             while (jarEntryEnumeration.hasMoreElements()) {
                 String name = jarEntryEnumeration.nextElement().getName();

@@ -23,16 +23,17 @@ public class CoolDownHelper {
     }
 
     public void start(@NotNull UUID uuid, boolean reentry, long duration, @Nullable IReentryHandler reentryHandler, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler) {
-        if (isRunning(uuid)) {
+        Long time = timeMap.get(uuid);
+        if (time != null && time > System.currentTimeMillis()) {
             if (reentry) {
                 if (reentryHandler == null || reentryHandler.handle()) {
-                    setup(uuid, duration);
+                    init(uuid, duration);
                 }
             } else if (runHandler != null) {
-                runHandler.handle(getDurationLeft(uuid));
+                runHandler.handle(Math.max(time - System.currentTimeMillis(), 0L));
             }
         } else if (startHandler == null || startHandler.handle()) {
-            setup(uuid, duration);
+            init(uuid, duration);
         }
     }
 
@@ -40,7 +41,7 @@ public class CoolDownHelper {
         timeMap.remove(uuid);
     }
 
-    private void setup(@NotNull UUID uuid, long duration) {
+    private void init(@NotNull UUID uuid, long duration) {
         timeMap.put(uuid, System.currentTimeMillis() + duration);
     }
 

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 
 public abstract class AbstractLang extends AbstractConfig {
-    protected static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
+    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 
     public @NotNull Component getComponent(@NotNull String path) {
         return MINI_MESSAGE.deserialize(getString(path));

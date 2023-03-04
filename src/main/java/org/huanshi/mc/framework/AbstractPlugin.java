@@ -27,7 +27,7 @@ public abstract class AbstractPlugin extends JavaPlugin implements IComponent {
     @Override
     public void onEnable() {
         BukkitAPI.createDataFolder(this);
-        Scanner.scan(this);
+        Bootstrap.scan(this);
         BukkitAPI.sendConsoleMessage(enable);
     }
 

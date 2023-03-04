@@ -3,13 +3,13 @@ package org.huanshi.mc.framework.task;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.pojo.IComponent;
-import org.huanshi.mc.framework.pojo.Registrable;
+import org.huanshi.mc.framework.pojo.Registrar;
 import org.huanshi.mc.framework.annotation.HuanshiTask;
 import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractTask extends BukkitRunnable implements IComponent, Registrable {
-    private final @NotNull HuanshiTask huanshiTask = getClass().getAnnotation(HuanshiTask.class);
+public abstract class AbstractTask extends BukkitRunnable implements IComponent, Registrar {
+    private final HuanshiTask huanshiTask = getClass().getAnnotation(HuanshiTask.class);
     private final boolean async = huanshiTask.async();
     private final long delay = huanshiTask.delay(), period = huanshiTask.period();
 

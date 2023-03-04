@@ -8,17 +8,17 @@ import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.annotation.HuanshiCommand;
 import org.huanshi.mc.framework.api.BukkitAPI;
 import org.huanshi.mc.framework.pojo.IComponent;
-import org.huanshi.mc.framework.pojo.Registrable;
+import org.huanshi.mc.framework.pojo.Registrar;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractCommand implements IComponent, Registrable, TabExecutor {
+public abstract class AbstractCommand implements IComponent, Registrar, TabExecutor {
     @Getter
     private final @NotNull String name = StringUtils.trimToNull(getClass().getAnnotation(HuanshiCommand.class).name());
-    private final @NotNull PluginCommand pluginCommand = Objects.requireNonNull(BukkitAPI.getPluginCommand(name));
+    private final PluginCommand pluginCommand = Objects.requireNonNull(BukkitAPI.getPluginCommand(name));
 
     @Override
     public void onCreate(@NotNull AbstractPlugin plugin) {}

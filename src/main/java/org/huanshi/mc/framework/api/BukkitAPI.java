@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitTask;
 import org.huanshi.mc.framework.AbstractPlugin;
-import org.huanshi.mc.framework.command.AbstractCommand;
 import org.huanshi.mc.framework.listener.AbstractListener;
 import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
@@ -18,17 +17,10 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Objects;
 
 public class BukkitAPI {
     public static @Nullable PluginCommand getPluginCommand(@NotNull String name) {
         return Bukkit.getPluginCommand(name);
-    }
-
-    public static void registerTabExecutor(@NotNull String name, @NotNull AbstractCommand command) {
-        PluginCommand pluginCommand = Objects.requireNonNull(Bukkit.getPluginCommand(name));
-        pluginCommand.setExecutor(command);
-        pluginCommand.setTabCompleter(command);
     }
 
     public static void registerEvent(@NotNull AbstractPlugin plugin, @NotNull AbstractListener listener) {

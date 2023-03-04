@@ -12,8 +12,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TimerHelper {
-    private final Map<UUID, Long> durationMap = new HashMap<>();
     private final AbstractPlugin plugin;
+    private final Map<UUID, Long> durationMap = new HashMap<>();
 
     public interface IReentryHandler {
         boolean handle();
@@ -37,11 +37,12 @@ public class TimerHelper {
 
     public static void start(@NotNull AbstractPlugin plugin, boolean async, long duration, long delay, long period, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler, @Nullable IStopHandler stopHandler) {
         if (startHandler == null || startHandler.handle()) {
-            AtomicLong atomicLong = new AtomicLong(duration);
             BukkitRunnable bukkitRunnable = new BukkitRunnable() {
+                private final AtomicLong atomicLong = new AtomicLong(duration);
                 @Override
                 public void run() {
-                    if ((atomicLong.getAndDecrement() <= 0L || (runHandler != null && !runHandler.handle(atomicLong.get()))) && (stopHandler == null || stopHandler.handle())) {
+                    long repeatLeft = atomicLong.getAndAdd(-period);
+                    if ((repeatLeft <= 0L || (runHandler != null && !runHandler.handle(repeatLeft))) && (stopHandler == null || stopHandler.handle())) {
                         cancel();
                     }
                 }
@@ -56,22 +57,23 @@ public class TimerHelper {
 
     public void start(@NotNull UUID uuid, boolean async, boolean reentry, long duration, long delay, long period, @Nullable IReentryHandler reentryHandler, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler, @Nullable IStopHandler stopHandler) {
         synchronized (getClass() + uuid.toString()) {
-            if (isRunning(uuid)) {
+            if (durationMap.containsKey(uuid)) {
                 if (reentry && (reentryHandler == null || reentryHandler.handle())) {
-                    setup(uuid, duration);
+                    init(uuid, duration);
                 }
             } else if (startHandler == null || startHandler.handle()) {
-                setup(uuid, duration);
+                init(uuid, duration);
                 BukkitRunnable bukkitRunnable = new BukkitRunnable() {
                     @Override
                     public void run() {
                         synchronized (getClass() + uuid.toString()) {
-                            long durationLeft = getDurationLeft(uuid);
+                            long durationLeft = durationMap.getOrDefault(uuid, 0L);
                             if (durationLeft > 0L) {
                                 if (runHandler == null || runHandler.handle(durationLeft)) {
-                                    durationMap.put(uuid, Math.max(durationLeft - period, 0L));
+                                    durationMap.put(uuid, durationLeft - period);
                                 }
                             } else if (stopHandler == null || stopHandler.handle()) {
+                                durationMap.remove(uuid);
                                 cancel();
                             }
                         }
@@ -92,19 +94,13 @@ public class TimerHelper {
         }
     }
 
-    private void setup(@NotNull UUID uuid, long duration) {
+    private void init(@NotNull UUID uuid, long duration) {
         durationMap.put(uuid, duration);
-    }
-
-    public long getDurationLeft(@NotNull UUID uuid) {
-        synchronized (getClass() + uuid.toString()) {
-            return durationMap.getOrDefault(uuid, 0L);
-        }
     }
 
     public boolean isRunning(@NotNull UUID uuid) {
         synchronized (getClass() + uuid.toString()) {
-            return getDurationLeft(uuid) > 0L;
+            return durationMap.containsKey(uuid);
         }
     }
 }

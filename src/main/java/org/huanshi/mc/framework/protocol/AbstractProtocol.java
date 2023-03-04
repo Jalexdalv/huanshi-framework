@@ -6,14 +6,14 @@ import com.comphenix.protocol.events.PacketAdapter;
 import lombok.SneakyThrows;
 import org.huanshi.mc.framework.AbstractPlugin;
 import org.huanshi.mc.framework.pojo.IComponent;
-import org.huanshi.mc.framework.pojo.Registrable;
+import org.huanshi.mc.framework.pojo.Registrar;
 import org.huanshi.mc.framework.annotation.ProtocolHandler;
 import org.huanshi.mc.framework.utils.ReflectUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 
-public abstract class AbstractProtocol implements IComponent, Registrable {
+public abstract class AbstractProtocol implements IComponent, Registrar {
     protected static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
     @Override

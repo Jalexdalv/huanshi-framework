@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public abstract class AbstractConfig implements IComponent {
-    private final @NotNull String fileName = StringUtils.trimToNull(getClass().getAnnotation(HuanshiConfig.class).file());
+    private final String fileName = StringUtils.trimToNull(getClass().getAnnotation(HuanshiConfig.class).file());
     private File file;
     private YamlConfiguration configuration;
 

@@ -2,7 +2,6 @@ package org.huanshi.mc.framework.timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
-import org.huanshi.mc.framework.api.BukkitAPI;
 import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,8 +12,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CountdownHelper {
-    private final Map<UUID, Integer> repeatMap = new HashMap<>();
     private final AbstractPlugin plugin;
+    private final Map<UUID, Integer> repeatMap = new HashMap<>();
 
     public interface IReentryHandler {
         boolean handle();
@@ -38,39 +37,40 @@ public class CountdownHelper {
 
     public static void start(@NotNull AbstractPlugin plugin, boolean async, int repeat, long delay, long period, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler, @Nullable IStopHandler stopHandler) {
         if (startHandler == null || startHandler.handle()) {
-            AtomicInteger atomicInteger = new AtomicInteger(repeat);
             BukkitRunnable bukkitRunnable = new BukkitRunnable() {
+                private final AtomicInteger atomicInteger = new AtomicInteger(repeat);
                 @Override
                 public void run() {
-                    if ((atomicInteger.getAndDecrement() <= 0L || (runHandler != null && !runHandler.handle(atomicInteger.get()))) && (stopHandler == null || stopHandler.handle())) {
+                    int repeatLeft = atomicInteger.getAndDecrement();
+                    if ((repeatLeft <= 0L || (runHandler != null && !runHandler.handle(repeatLeft))) && (stopHandler == null || stopHandler.handle())) {
                         cancel();
                     }
                 }
             };
             if (async) {
-                BukkitAPI.runTaskTimerAsynchronously(plugin, bukkitRunnable, delay, period);
+                bukkitRunnable.runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             } else {
-                BukkitAPI.runTaskTimer(plugin, bukkitRunnable, delay, period);
+                bukkitRunnable.runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             }
         }
     }
 
     public void start(@NotNull UUID uuid, boolean async, boolean reentry, int repeat, long delay, long period, @Nullable IReentryHandler reentryHandler, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler, @Nullable IStopHandler stopHandler) {
         synchronized (getClass() + uuid.toString()) {
-            if (isRunning(uuid)) {
+            if (repeatMap.containsKey(uuid)) {
                 if (reentry && (reentryHandler == null || reentryHandler.handle())) {
-                    setup(uuid, repeat);
+                    init(uuid, repeat);
                 }
             } else if (startHandler == null || startHandler.handle()) {
-                setup(uuid, repeat);
+                init(uuid, repeat);
                 BukkitRunnable bukkitRunnable = new BukkitRunnable() {
                     @Override
                     public void run() {
                         synchronized (getClass() + uuid.toString()) {
-                            int repeatLeft = getRepeatLeft(uuid);
-                            if (repeatLeft > 0L) {
-                                if (runHandler == null || runHandler.handle(getRepeatLeft(uuid))) {
-                                    repeatMap.put(uuid, Math.max(--repeatLeft, 0));
+                            int repeatLeft = repeatMap.getOrDefault(uuid, 0);
+                            if (repeatLeft > 0) {
+                                if (runHandler == null || runHandler.handle(repeatLeft)) {
+                                    repeatMap.put(uuid, --repeatLeft);
                                 }
                             } else if (stopHandler == null || stopHandler.handle()) {
                                 cancel();
@@ -93,19 +93,13 @@ public class CountdownHelper {
         }
     }
 
-    private void setup(@NotNull UUID uuid, int repeat) {
+    private void init(@NotNull UUID uuid, int repeat) {
         repeatMap.put(uuid, repeat);
-    }
-
-    public int getRepeatLeft(@NotNull UUID uuid) {
-        synchronized (getClass() + uuid.toString()) {
-            return repeatMap.getOrDefault(uuid, 0);
-        }
     }
 
     public boolean isRunning(@NotNull UUID uuid) {
         synchronized (getClass() + uuid.toString()) {
-            return getRepeatLeft(uuid) > 0;
+            return repeatMap.containsKey(uuid);
         }
     }
 }
