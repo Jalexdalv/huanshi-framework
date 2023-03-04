@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public abstract class AbstractBossBarService extends AbstractService {
-    private TimerHelper timerHelper;
     private final Map<UUID, BossBar> bossBarMap = new HashMap<>();
+    private TimerHelper timerHelper;
 
     public interface IBossBarHandler {
         @NotNull Component handle(long durationLeft);

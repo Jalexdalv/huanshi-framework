@@ -31,8 +31,8 @@ public class BukkitAPI {
         pluginCommand.setTabCompleter(command);
     }
 
-    public static void registerEvent(@NotNull AbstractPlugin huanshiPlugin, @NotNull AbstractListener huanshiListener) {
-        Bukkit.getPluginManager().registerEvents(huanshiListener, huanshiPlugin);
+    public static void registerEvent(@NotNull AbstractPlugin plugin, @NotNull AbstractListener listener) {
+        Bukkit.getPluginManager().registerEvents(listener, plugin);
     }
 
     public static @Nullable Player findPlayer(@NotNull String targetPlayerName) {
@@ -44,8 +44,8 @@ public class BukkitAPI {
     }
 
     @SneakyThrows
-    public static void createDataFolder(@NotNull AbstractPlugin huanshiPlugin) {
-        Path path = huanshiPlugin.getDataFolder().toPath();
+    public static void createDataFolder(@NotNull AbstractPlugin plugin) {
+        Path path = plugin.getDataFolder().toPath();
         if (!Files.exists(path)) {
             Files.createDirectory(path);
         }
@@ -59,36 +59,40 @@ public class BukkitAPI {
         Bukkit.getLogger().info(message);
     }
 
-    public static void cancelAllTasks(@NotNull AbstractPlugin huanshiPlugin) {
-        Bukkit.getScheduler().cancelTasks(huanshiPlugin);
+    public static void cancelTask(@NotNull AbstractPlugin plugin, int taskId) {
+        Bukkit.getScheduler().cancelTask(taskId);
+    }
+
+    public static void cancelAllTasks(@NotNull AbstractPlugin plugin) {
+        Bukkit.getScheduler().cancelTasks(plugin);
     }
 
     public static void callEvent(@NotNull Event event) {
         Bukkit.getPluginManager().callEvent(event);
     }
 
-    public static @NotNull BukkitTask runTask(@NotNull AbstractPlugin huanshiPlugin, @NotNull Runnable runnable) {
-        return Bukkit.getScheduler().runTask(huanshiPlugin, runnable);
+    public static @NotNull BukkitTask runTask(@NotNull AbstractPlugin plugin, @NotNull Runnable runnable) {
+        return Bukkit.getScheduler().runTask(plugin, runnable);
     }
 
-    public static @NotNull BukkitTask runTaskAsynchronously(@NotNull AbstractPlugin huanshiPlugin, @NotNull Runnable runnable) {
-        return Bukkit.getScheduler().runTaskAsynchronously(huanshiPlugin, runnable);
+    public static @NotNull BukkitTask runTaskAsynchronously(@NotNull AbstractPlugin plugin, @NotNull Runnable runnable) {
+        return Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
     }
 
-    public static @NotNull BukkitTask runTaskLater(@NotNull AbstractPlugin huanshiPlugin, @NotNull Runnable runnable, long delay) {
-        return Bukkit.getScheduler().runTaskLater(huanshiPlugin, runnable, FormatUtils.convertDurationToTick(delay));
+    public static @NotNull BukkitTask runTaskLater(@NotNull AbstractPlugin plugin, @NotNull Runnable runnable, long delay) {
+        return Bukkit.getScheduler().runTaskLater(plugin, runnable, FormatUtils.convertDurationToTick(delay));
     }
 
-    public static @NotNull BukkitTask runTaskLaterAsynchronously(@NotNull AbstractPlugin huanshiPlugin, @NotNull Runnable runnable, long delay) {
-        return Bukkit.getScheduler().runTaskLaterAsynchronously(huanshiPlugin, runnable, FormatUtils.convertDurationToTick(delay));
+    public static @NotNull BukkitTask runTaskLaterAsynchronously(@NotNull AbstractPlugin plugin, @NotNull Runnable runnable, long delay) {
+        return Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, runnable, FormatUtils.convertDurationToTick(delay));
     }
 
-    public static @NotNull BukkitTask runTaskTimer(@NotNull AbstractPlugin huanshiPlugin, @NotNull Runnable runnable, long delay, long period) {
-        return Bukkit.getScheduler().runTaskTimer(huanshiPlugin, runnable, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+    public static @NotNull BukkitTask runTaskTimer(@NotNull AbstractPlugin plugin, @NotNull Runnable runnable, long delay, long period) {
+        return Bukkit.getScheduler().runTaskTimer(plugin, runnable, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
     }
 
-    public static @NotNull BukkitTask runTaskTimerAsynchronously(@NotNull AbstractPlugin huanshiPlugin, @NotNull Runnable runnable, long delay, long period) {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(huanshiPlugin, runnable, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+    public static @NotNull BukkitTask runTaskTimerAsynchronously(@NotNull AbstractPlugin plugin, @NotNull Runnable runnable, long delay, long period) {
+        return Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, runnable, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
     }
 
     public static @NotNull Collection<? extends Player> getOnlinePlayers() {

@@ -2,7 +2,7 @@ package org.huanshi.mc.framework.timer;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.huanshi.mc.framework.AbstractPlugin;
-import org.huanshi.mc.framework.api.BukkitAPI;
+import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,26 +36,27 @@ public class TimerHelper {
     }
 
     public static void start(@NotNull AbstractPlugin plugin, boolean async, long duration, long delay, long period, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler, @Nullable IStopHandler stopHandler) {
-        AtomicLong atomicLong = new AtomicLong(duration);
-        BukkitRunnable bukkitRunnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                if ((atomicLong.getAndDecrement() <= 0L || (runHandler != null && !runHandler.handle(atomicLong.get()))) && (stopHandler == null || stopHandler.handle())) {
-                    cancel();
+        if (startHandler == null || startHandler.handle()) {
+            AtomicLong atomicLong = new AtomicLong(duration);
+            BukkitRunnable bukkitRunnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if ((atomicLong.getAndDecrement() <= 0L || (runHandler != null && !runHandler.handle(atomicLong.get()))) && (stopHandler == null || stopHandler.handle())) {
+                        cancel();
+                    }
                 }
+            };
+            if (async) {
+                bukkitRunnable.runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+            } else {
+                bukkitRunnable.runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
             }
-        };
-        if (async) {
-            BukkitAPI.runTaskTimerAsynchronously(plugin, bukkitRunnable, delay, period);
-        } else {
-            BukkitAPI.runTaskTimer(plugin, bukkitRunnable, delay, period);
         }
     }
 
     public void start(@NotNull UUID uuid, boolean async, boolean reentry, long duration, long delay, long period, @Nullable IReentryHandler reentryHandler, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler, @Nullable IStopHandler stopHandler) {
         synchronized (getClass() + uuid.toString()) {
-            Long durationLeft = durationMap.get(uuid);
-            if (durationLeft != null && durationLeft > 0L) {
+            if (isRunning(uuid)) {
                 if (reentry && (reentryHandler == null || reentryHandler.handle())) {
                     setup(uuid, duration);
                 }
@@ -65,10 +66,10 @@ public class TimerHelper {
                     @Override
                     public void run() {
                         synchronized (getClass() + uuid.toString()) {
-                            Long durationLeft = durationMap.get(uuid);
-                            if (durationLeft != null && durationLeft > 0L) {
-                                if (runHandler == null || runHandler.handle(getDurationLeft(uuid))) {
-                                    durationMap.put(uuid, Math.max(durationLeft - period, 0));
+                            long durationLeft = getDurationLeft(uuid);
+                            if (durationLeft > 0L) {
+                                if (runHandler == null || runHandler.handle(durationLeft)) {
+                                    durationMap.put(uuid, Math.max(durationLeft - period, 0L));
                                 }
                             } else if (stopHandler == null || stopHandler.handle()) {
                                 cancel();
@@ -77,9 +78,9 @@ public class TimerHelper {
                     }
                 };
                 if (async) {
-                    BukkitAPI.runTaskTimerAsynchronously(plugin, bukkitRunnable, delay, period);
+                    bukkitRunnable.runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
                 } else {
-                    BukkitAPI.runTaskTimer(plugin, bukkitRunnable, delay, period);
+                    bukkitRunnable.runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
                 }
             }
         }
@@ -103,8 +104,7 @@ public class TimerHelper {
 
     public boolean isRunning(@NotNull UUID uuid) {
         synchronized (getClass() + uuid.toString()) {
-            Long duration = durationMap.get(uuid);
-            return duration != null && duration > 0L;
+            return getDurationLeft(uuid) > 0L;
         }
     }
 }

@@ -22,10 +22,6 @@ public class CoolDownHelper {
         void handle(long durationLeft);
     }
 
-    public interface IStopHandler {
-        boolean handle();
-    }
-
     public void start(@NotNull UUID uuid, boolean reentry, long duration, @Nullable IReentryHandler reentryHandler, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler) {
         if (isRunning(uuid)) {
             if (reentry) {
@@ -40,10 +36,8 @@ public class CoolDownHelper {
         }
     }
 
-    public void stop(@NotNull UUID uuid, @Nullable IStopHandler stopHandler) {
-        if (stopHandler == null || stopHandler.handle()) {
-            timeMap.remove(uuid);
-        }
+    public void stop(@NotNull UUID uuid) {
+        timeMap.remove(uuid);
     }
 
     private void setup(@NotNull UUID uuid, long duration) {
@@ -57,6 +51,6 @@ public class CoolDownHelper {
 
     public boolean isRunning(@NotNull UUID uuid) {
         Long time = timeMap.get(uuid);
-        return time != null && time - System.currentTimeMillis() > 0L;
+        return time != null && time > System.currentTimeMillis();
     }
 }
