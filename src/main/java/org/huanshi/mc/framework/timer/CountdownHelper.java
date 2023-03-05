@@ -73,6 +73,7 @@ public class CountdownHelper {
                                     repeatMap.put(uuid, --repeatLeft);
                                 }
                             } else if (stopHandler == null || stopHandler.handle()) {
+                                repeatMap.remove(uuid);
                                 cancel();
                             }
                         }
