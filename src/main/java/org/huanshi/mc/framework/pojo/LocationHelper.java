@@ -47,17 +47,17 @@ public class LocationHelper extends Location {
         return new AABB(new Vector(getX() + correctX(x1, z1), getY() + y1, getZ() + correctZ(x1, z1)), new Vector(getX() + correctX(-x2, z2), getY() + y1, getZ() + correctZ(-x2, z2)), new Vector(getX() + correctX(x2, z2), getY() + y2, getZ() + correctZ(x2, z2)), new Vector(getX() + correctX(-x1, z1), getY() + y2, getZ() + correctZ(-x1, z1)));
     }
 
-    public @NotNull <T extends Entity> List<T> getNearbyEntity(@NotNull Class<T> clazz, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable IEntityHandler<T> entityHandler) {
-        return getNearbyEntityExceptPlayer(null, clazz, x1, y1, z1, x2, y2, z2, predicate, entityHandler);
+    public @NotNull <T extends Entity> List<T> getNearbyEntity(@NotNull Class<T> cls, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable IEntityHandler<T> entityHandler) {
+        return getNearbyEntityExceptPlayer(null, cls, x1, y1, z1, x2, y2, z2, predicate, entityHandler);
     }
 
     @SuppressWarnings("unchecked")
-    public @NotNull <T extends Entity> List<T> getNearbyEntityExceptPlayer(@Nullable Player player, @NotNull Class<T> clazz, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable IEntityHandler<T> entityHandler) {
+    public @NotNull <T extends Entity> List<T> getNearbyEntityExceptPlayer(@Nullable Player player, @NotNull Class<T> cls, double x1, double y1, double z1, double x2, double y2, double z2, @Nullable Predicate<T> predicate, @Nullable IEntityHandler<T> entityHandler) {
         List<T> entities = new LinkedList<>();
         AABB aabb = getAABB(x1, y1, z1, x2, y2, z2);
         ((CraftWorld) getWorld()).getHandle().getEntityLookup().getEntities(player == null ? null : ((CraftEntity) player).getHandle(), aabb.getAxisAlignedBB(), null, entity -> {
             CraftEntity craftEntity = entity.getBukkitEntity();
-            if (clazz.isInstance(craftEntity)) {
+            if (cls.isInstance(craftEntity)) {
                 T t = (T) craftEntity;
                 if ((predicate == null || predicate.test(t)) && aabb.isInAABB(t)) {
                     if (entityHandler != null) {
