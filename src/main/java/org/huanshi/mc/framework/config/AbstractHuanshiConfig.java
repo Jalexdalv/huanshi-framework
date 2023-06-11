@@ -4,9 +4,9 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.AbstractHuanshiPlugin;
 import org.huanshi.mc.framework.annotation.HuanshiConfig;
-import org.huanshi.mc.framework.pojo.IComponent;
+import org.huanshi.mc.framework.pojo.IHuanshiComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,20 +17,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public abstract class AbstractConfig implements IComponent {
+public abstract class AbstractHuanshiConfig implements IHuanshiComponent {
     private final String fileName = StringUtils.trimToNull(getClass().getAnnotation(HuanshiConfig.class).file());
     private File file;
     private YamlConfiguration configuration;
 
     @Override
-    public void onCreate(@NotNull AbstractPlugin plugin) {
-        file = new File(plugin.getDataFolder(), fileName);
+    public void onCreate(@NotNull AbstractHuanshiPlugin huanshiPlugin) {
+        file = new File(huanshiPlugin.getDataFolder(), fileName);
     }
 
     @SneakyThrows
     @Override
-    public void onLoad(@NotNull AbstractPlugin plugin) {
-        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource(fileName)))) {
+    public void onLoad(@NotNull AbstractHuanshiPlugin huanshiPlugin) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(huanshiPlugin.getResource(fileName)))) {
             if (file.exists()) {
                 configuration = YamlConfiguration.loadConfiguration(file);
                 configuration.setDefaults(YamlConfiguration.loadConfiguration(inputStreamReader));

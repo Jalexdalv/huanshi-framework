@@ -4,30 +4,30 @@ import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
-import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.AbstractHuanshiPlugin;
 import org.huanshi.mc.framework.annotation.HuanshiCommand;
 import org.huanshi.mc.framework.api.BukkitAPI;
-import org.huanshi.mc.framework.pojo.IComponent;
-import org.huanshi.mc.framework.pojo.Registrar;
+import org.huanshi.mc.framework.pojo.IHuanshiComponent;
+import org.huanshi.mc.framework.pojo.IHuanshiRegistrar;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractCommand implements IComponent, Registrar, TabExecutor {
+public abstract class AbstractHuanshiCommand implements IHuanshiComponent, IHuanshiRegistrar, TabExecutor {
     @Getter
     private final @NotNull String name = StringUtils.trimToNull(getClass().getAnnotation(HuanshiCommand.class).name());
     private final PluginCommand pluginCommand = Objects.requireNonNull(BukkitAPI.getPluginCommand(name));
 
     @Override
-    public void onCreate(@NotNull AbstractPlugin plugin) {}
+    public void onCreate(@NotNull AbstractHuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void onLoad(@NotNull AbstractPlugin plugin) {}
+    public void onLoad(@NotNull AbstractHuanshiPlugin huanshiPlugin) {}
 
     @Override
-    public void register(@NotNull AbstractPlugin plugin) {
+    public void register(@NotNull AbstractHuanshiPlugin huanshiPlugin) {
         pluginCommand.setExecutor(this);
         pluginCommand.setTabCompleter(this);
     }

@@ -4,12 +4,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import org.huanshi.mc.framework.config.AbstractConfig;
+import org.huanshi.mc.framework.config.AbstractHuanshiConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 
-public abstract class AbstractLang extends AbstractConfig {
+public abstract class AbstractHuanshiLang extends AbstractHuanshiConfig {
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 
     public @NotNull Component getComponent(@NotNull String path) {
@@ -21,8 +21,8 @@ public abstract class AbstractLang extends AbstractConfig {
     }
 
     public @NotNull Component format(@NotNull Component component, @NotNull Object @NotNull ... values) {
-        for (int i = 0, len = values.length; i < len; i++) {
-            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + i + "}").replacement(values[i].toString()).build());
+        for (int index = 0, len = values.length; index < len; index++) {
+            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("{" + index + "}").replacement(values[index].toString()).build());
         }
         return component;
     }

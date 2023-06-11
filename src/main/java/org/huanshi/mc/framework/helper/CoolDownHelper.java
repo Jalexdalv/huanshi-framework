@@ -1,4 +1,4 @@
-package org.huanshi.mc.framework.timer;
+package org.huanshi.mc.framework.helper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

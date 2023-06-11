@@ -1,7 +1,7 @@
-package org.huanshi.mc.framework.timer;
+package org.huanshi.mc.framework.helper;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.huanshi.mc.framework.AbstractPlugin;
+import org.huanshi.mc.framework.AbstractHuanshiPlugin;
 import org.huanshi.mc.framework.utils.FormatUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TimerHelper {
-    private final AbstractPlugin plugin;
+    private final AbstractHuanshiPlugin plugin;
     private final Map<UUID, Long> durationMap = new HashMap<>();
 
     public interface IReentryHandler {
@@ -31,11 +31,11 @@ public class TimerHelper {
         boolean handle();
     }
 
-    public TimerHelper(@NotNull AbstractPlugin plugin) {
+    public TimerHelper(@NotNull AbstractHuanshiPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public static void start(@NotNull AbstractPlugin plugin, boolean async, long duration, long delay, long period, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler, @Nullable IStopHandler stopHandler) {
+    public static void start(@NotNull AbstractHuanshiPlugin plugin, boolean async, long duration, long delay, long period, @Nullable IStartHandler startHandler, @Nullable IRunHandler runHandler, @Nullable IStopHandler stopHandler) {
         if (startHandler == null || startHandler.handle()) {
             BukkitRunnable bukkitRunnable = new BukkitRunnable() {
                 private final AtomicLong atomicLong = new AtomicLong(duration);
