@@ -1,11 +1,13 @@
 package org.huanshi.mc.framework;
 
 import lombok.SneakyThrows;
-import org.huanshi.mc.framework.annotation.HuanshiAutowired;
-import org.huanshi.mc.framework.pojo.IHuanshiComponent;
-import org.huanshi.mc.framework.pojo.IHuanshiRegistrar;
+import org.huanshi.mc.framework.annotation.Autowired;
+import org.huanshi.mc.framework.plugin.AbstractPlugin;
+import org.huanshi.mc.framework.pojo.IComponent;
+import org.huanshi.mc.framework.pojo.IRegistrar;
 import org.huanshi.mc.framework.utils.ReflectUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -15,50 +17,49 @@ import java.util.List;
 import java.util.Map;
 
 public class Bootstrap {
-    private static final Map<Class<? extends IHuanshiComponent>, IHuanshiComponent> COMPONENT_MAP = new HashMap<>();
+    private static final Map<Class<? extends IComponent>, IComponent> COMPONENT_MAP = new HashMap<>();
 
-    @SuppressWarnings("unchecked")
-    public static void scan(@NotNull AbstractHuanshiPlugin plugin) {
+    public static void scan(@NotNull AbstractPlugin plugin) {
         for (Class<?> cls : ReflectUtils.getJarClasses(plugin.getClass())) {
-            int modifiers = cls.getModifiers();
-            if (IHuanshiComponent.class.isAssignableFrom(cls) && !Modifier.isAbstract(modifiers) && !Modifier.isInterface(modifiers)) {
-                Class<? extends IHuanshiComponent> componentClass = (Class<? extends IHuanshiComponent>) cls;
-                init(plugin, componentClass, new LinkedList<>(){{ add(componentClass); }});
-            }
+            init(plugin, cls, null);
         }
     }
 
     @SuppressWarnings("unchecked")
     @SneakyThrows
-    private static void init(@NotNull AbstractHuanshiPlugin plugin, @NotNull Class<? extends IHuanshiComponent> cls, @NotNull List<Class<? extends IHuanshiComponent>> autowiredClasses) {
+    private static void init(@NotNull AbstractPlugin plugin, @NotNull Class<?> cls, @Nullable List<Class<? extends IComponent>> autowiredClasses) {
         if (COMPONENT_MAP.containsKey(cls)) {
             return;
         }
-        IHuanshiComponent component = AbstractHuanshiPlugin.class.isAssignableFrom(cls) ? plugin : cls.getConstructor().newInstance();
-        for (Field field : ReflectUtils.getFields(cls)) {
-            field.setAccessible(true);
-            if (field.getAnnotation(HuanshiAutowired.class) != null) {
-                Class<?> fieldClass = field.getType();
-                int modifiers = fieldClass.getModifiers();
-                if (IHuanshiComponent.class.isAssignableFrom(fieldClass) && !Modifier.isAbstract(modifiers) && !Modifier.isInterface(modifiers)) {
-                    for (Class<?> autowiredClass : autowiredClasses) {
-                        if (autowiredClass.isAssignableFrom(fieldClass)) {
-                            return;
-                        }
-                    }
-                    Class<? extends IHuanshiComponent> componentClass = (Class<? extends IHuanshiComponent>) fieldClass;
-                    autowiredClasses.add(componentClass);
-                    init(plugin, componentClass, autowiredClasses);
-                    autowiredClasses.remove(fieldClass);
-                    field.set(component, COMPONENT_MAP.get(componentClass));
-                }
+        int modifiers = cls.getModifiers();
+        if (Modifier.isAbstract(modifiers) || Modifier.isInterface(modifiers) || !IComponent.class.isAssignableFrom(cls)) {
+            return;
+        }
+        if (autowiredClasses == null) {
+            autowiredClasses = new LinkedList<>();
+        } else {
+            for (Class<? extends IComponent> autowiredClass : autowiredClasses) {
+                assert !autowiredClass.isAssignableFrom(cls);
             }
+        }
+        Class<? extends IComponent> componentClass = (Class<? extends IComponent>) cls;
+        autowiredClasses.add(componentClass);
+        IComponent component = componentClass == plugin.getClass() ? plugin : componentClass.getConstructor().newInstance();
+        for (Field field : ReflectUtils.getFields(componentClass)) {
+            field.setAccessible(true);
+            if (field.getAnnotation(Autowired.class) == null) {
+                continue;
+            }
+            Class<?> fieldClass = field.getType();
+            init(plugin, fieldClass, autowiredClasses);
+            field.set(component, COMPONENT_MAP.get(fieldClass));
         }
         component.superOnCreate(plugin);
         component.superOnLoad(plugin);
-        if (IHuanshiRegistrar.class.isAssignableFrom(cls)) {
-            ((IHuanshiRegistrar) component).register(plugin);
+        if (IRegistrar.class.isAssignableFrom(componentClass)) {
+            ((IRegistrar) component).register(plugin);
         }
-        COMPONENT_MAP.put(cls, component);
+        COMPONENT_MAP.put(componentClass, component);
+        autowiredClasses.remove(componentClass);
     }
 }

@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface HuanshiCommand {
-    String name();
+public @interface Task {
+    boolean async() default false;
+    long delay() default 0;
+    long period();
 }
