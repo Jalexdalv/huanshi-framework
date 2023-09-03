@@ -13,7 +13,7 @@ import java.util.Objects;
 public abstract class AbstractTask extends BukkitRunnable implements IComponent, IRegistrar {
     private final Task task = Objects.requireNonNull(getClass().getAnnotation(Task.class));
     private final boolean async = task.async();
-    private final long delay = task.delay(), period = task.period();
+    private final long delay = FormatUtils.convertDurationToTick(task.delay()), period = FormatUtils.convertDurationToTick(task.period());
 
     @Override
     public abstract void run();
@@ -27,9 +27,9 @@ public abstract class AbstractTask extends BukkitRunnable implements IComponent,
     @Override
     public void register(@NotNull AbstractPlugin plugin) {
         if (async) {
-            runTaskTimerAsynchronously(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+            runTaskTimerAsynchronously(plugin, delay, period);
         } else {
-            runTaskTimer(plugin, FormatUtils.convertDurationToTick(delay), FormatUtils.convertDurationToTick(period));
+            runTaskTimer(plugin, delay, period);
         }
     }
 }

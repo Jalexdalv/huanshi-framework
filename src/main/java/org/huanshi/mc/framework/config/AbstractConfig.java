@@ -18,19 +18,19 @@ import java.util.Objects;
 import java.util.Set;
 
 public abstract class AbstractConfig implements IComponent {
-    private final String fileName = Objects.requireNonNull(StringUtils.trimToNull(getClass().getAnnotation(Config.class).file()));
+    private final String name = Objects.requireNonNull(StringUtils.trimToNull(getClass().getAnnotation(Config.class).file()));
     private File file;
     private YamlConfiguration configuration;
 
     @Override
     public void onCreate(@NotNull AbstractPlugin plugin) {
-        file = new File(plugin.getDataFolder(), fileName);
+        file = new File(plugin.getDataFolder(), name);
     }
 
     @SneakyThrows
     @Override
     public void onLoad(@NotNull AbstractPlugin plugin) {
-        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource(fileName)))) {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(Objects.requireNonNull(plugin.getResource(name)))) {
             if (file.exists()) {
                 configuration = YamlConfiguration.loadConfiguration(file);
                 configuration.setDefaults(YamlConfiguration.loadConfiguration(inputStreamReader));
